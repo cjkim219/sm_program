@@ -1,6 +1,6 @@
 import tkinter as tk
 import base_function as baseftn
-# import config_set as con
+import config_set as con
 
 from tkinter import ttk
 
@@ -19,9 +19,11 @@ def top_frame(main_screen):
     Frame_1 = main_screen.gen_Frame(1, 110, "blue")
     Frame_1.pack(side = tk.TOP, fill=tk.X, expand=1)
     
-    btnInsert = tk.Button(Frame_1, text="로고", width=30, height=5)
-    btnInsert.place(x=10, y=10)
-    
+    # 로고 사진 변경
+    photo = tk.PhotoImage(file=con.logo_directory)
+    imgInsert = tk.Label(Frame_1, image=photo)
+    imgInsert.place(x=10, y=10)
+        
     # 공지사항 버튼 함수 추가
     btnInsert = tk.Button(Frame_1, text="공지사항", width=15, height=3)
     btnInsert.place(x=300, y=30)
