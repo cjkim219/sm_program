@@ -10,4 +10,4 @@ config = {
 main_screen_title = "하이어 수학학원"
 main_screen_size = "1080x720"
 
-logo_directory = "..\picture\photo.png"
+logo_directory = r"..\picture\photo.png"
