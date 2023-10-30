@@ -59,6 +59,10 @@ class window_set:
         self.label = tk.Label(self.new_window, text=lb_text, font=font)
         self.label.place(x=l_x, rely=l_rely)
         
+    def gen_label_rely(self, lb_text, l_x, l_rely):
+        self.label = tk.Label(self.new_window, text=lb_text)
+        self.label.place(x=l_x, rely=l_rely)
+        
     # 탭을 만들 수 있는 몸통(?)프래임을 만들어주는 메서드
     # ex) 기본정보 + 수업정보 + 상담내용 + 성적결과 네 개의 탭이 하나의 노트북에 담김
     def gen_notebook(self, width, height):
@@ -115,3 +119,7 @@ def insert_label_text(Frame, lb_text, l_x, l_y, e_x, e_y, L_width=7, T_width=15,
 def gen_button_fs(Frame, bt_text, cm_ftn, b_x, b_y, font=1):
     button = tk.Button(Frame, text=bt_text, command=cm_ftn, font=font)
     button.place(x=b_x, y=b_y)
+    
+def gen_label_rely(Frame, lb_text, l_x, l_rely):
+    label = tk.Label(Frame, text=lb_text)
+    label.place(x=l_x, rely=l_rely)

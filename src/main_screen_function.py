@@ -55,6 +55,8 @@ def Name_list_button(Frame_class):
     
 def info_basic(tab):
     
+    tab_class = bftn.window_set(tab)
+    
     age_var = tk.StringVar()
     gender_var = tk.StringVar()
     school_var = tk.StringVar()
@@ -66,28 +68,57 @@ def info_basic(tab):
     # address_var = tk.StringVar()
     # add_info_var = tk.StringVar()
     
-    bftn.insert_label_entry(tab, age_var, "나이", 10, 10, 70, 10)
-    bftn.insert_label_entry(tab, gender_var, "성별", 10, 35, 70, 35)
-    bftn.insert_label_entry(tab, school_var, "학교", 10, 60, 70, 60)
-    bftn.insert_label_entry(tab, grade_var, "학년", 10, 85, 70, 85)
-    bftn.insert_label_entry(tab, birth_var, "생년월일", 10, 110, 70, 110)
-    bftn.insert_label_entry(tab, st_ph_var, "학생 연락처", 193, 10, 285, 10, L_width=12, E_width=25)
-    bftn.insert_label_entry(tab, pa_ph_var, "학부모 연락처", 193, 35, 285, 35, L_width=12, E_width=25)
-    bftn.insert_label_entry(tab, email_var, "e-mail", 226, 60, 285, 60, L_width=7, E_width=25)
-    bftn.insert_label_text(tab, "주소", 226, 85, 285, 85, L_width=7, T_width=25, height=3)
-    bftn.insert_label_text(tab, "특이사항", 10, 145, 10, 170, T_width=68, height=10)
+    tab_class.insert_label_entry(age_var, "나이", 10, 10, 70, 10)
+    tab_class.insert_label_entry(gender_var, "성별", 10, 35, 70, 35)
+    tab_class.insert_label_entry(school_var, "학교", 10, 60, 70, 60)
+    tab_class.insert_label_entry(grade_var, "학년", 10, 85, 70, 85)
+    tab_class.insert_label_entry(birth_var, "생년월일", 10, 110, 70, 110)
+    tab_class.insert_label_entry(st_ph_var, "학생 연락처", 193, 10, 285, 10, L_width=12, E_width=25)
+    tab_class.insert_label_entry(pa_ph_var, "학부모 연락처", 193, 35, 285, 35, L_width=12, E_width=25)
+    tab_class.insert_label_entry(email_var, "e-mail", 226, 60, 285, 60, L_width=7, E_width=25)
+    tab_class.insert_label_text("주소", 226, 85, 285, 85, L_width=7, T_width=25, height=3)
+    tab_class.insert_label_text("특이사항", 10, 145, 10, 170, T_width=68, height=10)
     
-    bftn.gen_button_fs(tab, "입력", empty_function, 440, 315)
+    tab_class.gen_button_fs("입력", empty_function, 440, 315)
 
     
     
     
 def info_class(tab):
-    t_variable = tk.StringVar()
     
+    tab_class = bftn.window_set(tab)
+    
+    main_book_var = tk.StringVar()
+    main_start_date_var = tk.StringVar()
+    main_end_date_var = tk.StringVar()
+    sub_book_var = tk.StringVar()
+    sub_start_date_var = tk.StringVar()
+    sub_end_date_var = tk.StringVar()
+    text_var = tk.StringVar()
+    
+    tab_class.gen_label_rely("● 진행중인 교재", 10, 0.03)
+    tab_class.insert_label_entry(main_book_var, "주 교재", 10, 40, 70, 40, E_width=19)
+    tab_class.insert_label_entry(main_start_date_var, "시작일", 210, 40, 270, 40, E_width=10)
+    tab_class.insert_label_entry(main_end_date_var, "종료일", 345, 40, 405, 40, E_width=10)
+    tab_class.insert_label_entry(sub_book_var, "부 교재", 10, 65, 70, 65, E_width=19)
+    tab_class.insert_label_entry(sub_start_date_var, "시작일", 210, 65, 270, 65, E_width=10)
+    tab_class.insert_label_entry(sub_end_date_var, "종료일", 345, 65, 405, 65, E_width=10)
+    tab_class.insert_label_entry(text_var, "특이사항", 10, 90, 70, 90, E_width=58)
+    
+    tab_class.gen_button("주교재 시작", empty_function, 70, 120)
+    tab_class.gen_button("부교재 시작", empty_function, 159, 120)
+    tab_class.gen_button("주교재 종료", empty_function, 250, 120)
+    tab_class.gen_button("부교재 종료", empty_function, 339, 120)
+    tab_class.gen_button_bs("완료 항목으로 이동", empty_function, 22, 1, 70, 150)
+    tab_class.gen_button_bs("완료된 교재", empty_function, 22, 1, 250, 150)
+    tab_class.gen_button_bs("입력", empty_function, 6, 3, 428, 120)
     
 def info_consult(tab):
-    t_variable = tk.StringVar()
+    tab_class = bftn.window_set(tab)
+    tab_class.gen_label_rely("● 상담일", 10, 0.03)
+    tab_class.gen_label_rely("● 상담기록", 10, 0.5)
+    # tab_class.gen_button
+    # t_variable = tk.StringVar()
     
     
 def info_exam(tab):
