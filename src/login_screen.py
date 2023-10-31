@@ -3,9 +3,6 @@ import base_function as baseftn
 import config_set as con
 import login_screen_function as lsf
 
-# login_wd = tk.Tk()
-# login_screen = baseftn.window_set(login_wd)
-
 
 def run_login_screen(login_wd):
     
@@ -25,10 +22,7 @@ def run_login_screen(login_wd):
     login_screen.gen_button_bs("종료", login_screen.clear_wd, 7, 1, 185, 200)
     
     login_screen.gen_label("<<<            환영합니다           >>>", 40, 170)
-    # login_label.pack(padx=5, pady=10)
-    
-        
-        
+ 
         
     
 def empty_function():
