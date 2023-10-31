@@ -46,10 +46,14 @@ class window_set:
     def gen_Frame_nobg(self, width, height):
         return tk.Frame(self.new_window, width=width, height=height)
         
-    # 라벨 생성 메서드 (초기에 샘플로 만든것... 현재 사용은 안함)
-    def gen_label(self, label_text):
-        self.label = tk.Label(text=label_text)
-        self.label.pack(pady=10)
+    # 라벨 생성 메서드
+    def gen_label(self, label_text, l_x, l_y):
+        self.label = tk.Label(self.new_window, text=label_text)
+        self.label.place(x=l_x, y=l_y)
+        
+        
+    def label_ntxt(self, new_text):
+        self.label.config(text=new_text)
         
     # 라벨 생성 메서드 + 라벨 폰트 크기 조절 + 위치를 좌표 대신 배율로 조정
     # (버튼과 마찬가지로.. 폰트 크기가 변하지 않음.. 조금 커지는정도)
@@ -71,7 +75,9 @@ class window_set:
     # 이미지 삽입 메서드, subsample이라는 메서드로 그림 크기를 해당 배율만큼 줄여줌. (15, 15) -> 가로, 세로 15배 축소
     def insert_image(self, image_path, i_x, i_y):
         photo = tk.PhotoImage(file=image_path)
-        imgInsert = tk.Label(self.new_window, image=photo.subsample(15, 15))
+        photo_sub = photo.subsample(10, 10)
+        imgInsert = tk.Label(self.new_window, image=photo_sub)
+        imgInsert.image = photo_sub
         imgInsert.place(x=i_x, y=i_y)
         
     # 라벨 + 엔트리 삽입 메서드, 엔트리는 텍스트를 입력할 수 있는 공간이며 입력받은 값을 변수로 활용 가능.
@@ -82,6 +88,12 @@ class window_set:
         self.label = tk.Label(self.new_window, text=title, width=L_width, anchor="e")
         self.label.place(x=l_x, y=l_y)
         self.entry = tk.Entry(self.new_window, width=E_width, textvariable=var)
+        self.entry.place(x=e_x, y=e_y)
+        
+    def insert_label_entry_show(self, var, title, show_str, l_x, l_y, e_x, e_y, L_width=7, E_width=17):
+        self.label = tk.Label(self.new_window, text=title, width=L_width, anchor="e")
+        self.label.place(x=l_x, y=l_y)
+        self.entry = tk.Entry(self.new_window, show=show_str, width=E_width, textvariable=var)
         self.entry.place(x=e_x, y=e_y)
         
     # 라벨 + 텍스트 삽입 메서드, height는 텍스트 라인 갯수를 의미함.
@@ -95,8 +107,8 @@ class window_set:
     def pack(self, side, fill, expand):
         self.new_window.pack(side=side, fill=fill, expand=expand)
         
-    # def wd(self):
-    #     return self.new_window
+    def sub_wd(self):
+        return tk.Toplevel(self.new_window)
         
     # 창을 종료시키는 메서드
     def clear_wd(self):

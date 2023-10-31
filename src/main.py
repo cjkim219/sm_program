@@ -1,30 +1,23 @@
 import tkinter as tk
-import tkinter as frametk
-
 
 import main_screen as ms
-# import login_screen as ls
+import login_screen as ls
 import base_function as baseftn
 import config_set as con
 
 
 
-# login_wd = tk.Tk()
-# login = baseftn.window_set(login_wd)
-
-main_wd = tk.Tk()
-main_screen = baseftn.window_set(main_wd)
-main_screen.set_title(con.main_screen_title)
-main_screen.set_size(con.main_screen_size)
-main_screen.set_fullscreen()
-
-
+login_wd = tk.Tk()
+ 
+        
 # login_result = [True, True]
+ls.run_login_screen(login_wd)
+
 
 
 # if login_result[0] == True and login_result[1] == True:
-    # login.clear_wd()
-ms.run_main_screen(main_screen)
+#     login_screen.clear_wd()
+#     ms.run_main_screen(main_screen)
 # Frame_1 = main_screen.gen_Frame()
 # Frame_1.pack()
 # btnInsert = tk.Button(Frame_1, text="입력")
@@ -39,8 +32,8 @@ ms.run_main_screen(main_screen)
 
 
 
-
-main_wd.mainloop()
+login_wd.mainloop()
+# main_wd.mainloop()
 
 # main_wd.iconphoto(False, PhotoImage(file = "photo.png"))
 
