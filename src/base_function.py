@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
+import pymysql
+
+import config_set as con
 
 def clear_entry(target):
     target.delete(0, tk.END) 
@@ -135,3 +138,59 @@ def gen_button_fs(Frame, bt_text, cm_ftn, b_x, b_y, font=1):
 def gen_label_rely(Frame, lb_text, l_x, l_rely):
     label = tk.Label(Frame, text=lb_text)
     label.place(x=l_x, rely=l_rely)
+    
+    
+    
+    
+class mysql_set:
+    def __init__(self, config):
+        self.config = config
+        self.strdata = []
+        self.result = []
+        
+    ### mysql query functions
+    def insert_query(self, columns, values):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                # sql = "INSERT INTO 테이블명 (열1, 열2, 열3) VALUES (%s, %s, %s)"
+                sql = "INSERT INTO " + con.table_name + " " + columns + " VALUES " + values
+                ######################
+                ## sql string 편집
+                ######################
+                    
+                cur.execute(sql)
+                conn.commit()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+
+    def select_query(self, columns, conditions):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                # sql = "SELECT 열1, 열2 FROM 테이블명 WHERE 조건"
+                sql = "SELECT " + columns + " FROM " + con.table_name + " WHERE " + conditions
+                ######################
+                ## sql string 편집
+                ######################
+                
+                cur.execute(sql)
+                result = cur.fetchall()    # result = cur.fetchone()
+                
+                # for row in result:
+                #     print(row)
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result

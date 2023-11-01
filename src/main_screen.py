@@ -36,7 +36,7 @@ def mid_frame(main_screen):
     Frame_class = baseftn.window_set(Frame_2)
     Frame_class.pack(tk.TOP, tk.X, 1)
     
-    Frame_class.gen_label_rely_fs("선생님", 100, 0.05)
+    Frame_class.gen_label_rely_fs("선생님", 105, 0.05)
     msf.list_box(Frame_2, 50)
     msf.Teacher_list_button(Frame_class)
     
@@ -44,7 +44,7 @@ def mid_frame(main_screen):
     msf.list_box(Frame_2, 200)
     msf.Class_list_button(Frame_class)
     
-    Frame_class.gen_label_rely_fs("이름", 400, 0.05)
+    Frame_class.gen_label_rely_fs("이름", 420, 0.05)
     msf.list_box(Frame_2, 350)
     msf.Name_list_button(Frame_class)
     
