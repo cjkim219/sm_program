@@ -2,15 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 
 import base_function as bftn
+import button_function as btftn
+import config_set as con
 
 
-def list_box(Frame, pos):
-    libInsert = tk.Listbox(Frame, width=13, height=14, selectmode="single")
-    libInsert.insert(0, "부원장")
-    libInsert.configure(font=10)
-    libInsert.place(x=pos, rely=0.1)
-    
-    
+
+
 def gen_notebook(Frame_class, width, height):    
     notebook = Frame_class.gen_notebook(width, height)
     notebook.place(x=530, rely=0.1)
@@ -34,15 +31,41 @@ def gen_notebook(Frame_class, width, height):
     
     
     
-def Teacher_list_button(Frame_class):
+def Teacher_list_button(Frame_class, T_list):
+    
+    var = tk.StringVar()
+        
     Frame_class.gen_button_fs("수정", empty_function, 115, 360)
-    Frame_class.gen_button_fs("추가", empty_function, 55, 400)
+    
+    T_entry = Frame_class.gen_entry(var, 50, 280, 15)
+    Frame_class.gen_button_fs("추가", lambda: btftn.add_T_listbox(Frame_class, T_list, T_entry, "teacher", var.get()), 55, 400)
+    
     Frame_class.gen_button_fs("삭제", empty_function, 115, 400)
     
-def Class_list_button(Frame_class):
+def Class_list_button(Frame_class, C_list, T_list):
+    
+    var = tk.StringVar()
+    
     Frame_class.gen_button_fs("수정", empty_function, 265, 360)
-    Frame_class.gen_button_fs("추가", empty_function, 205, 400)
+    Frame_class.gen_button_fs("조회", empty_function, 265, 320)
+    
+    C_entry = Frame_class.gen_entry(var, 200, 280, 15)
+    Frame_class.gen_button_fs("추가", lambda: btftn.add_C_listbox(Frame_class, C_list, C_entry, T_list, 
+                                                                "teacher, class_name", var.get()), 205, 400)
+    
     Frame_class.gen_button_fs("삭제", empty_function, 265, 400)
+    
+    
+def test_function(T_list, var):
+    index = T_list.curselection()
+    item = str(T_list.get(index))
+    print(len(item))
+    print(item[2:len(item)-3])
+    print(str(var.get()))
+    # print(T_list.get(index)
+    print(item)
+    
+    
     
 def Name_list_button(Frame_class):
     Frame_class.gen_button_fs("이동", empty_function, 355, 360)
@@ -76,7 +99,7 @@ def info_basic(tab):
     tab_class.insert_label_entry(st_ph_var, "학생 연락처", 193, 10, 285, 10, L_width=12, E_width=25)
     tab_class.insert_label_entry(pa_ph_var, "학부모 연락처", 193, 35, 285, 35, L_width=12, E_width=25)
     tab_class.insert_label_entry(email_var, "e-mail", 226, 60, 285, 60, L_width=7, E_width=25)
-    tab_class.insert_label_text("주소", 226, 85, 285, 85, L_width=7, T_width=25, height=3)
+    tab_class.insert_label_text("주소", 240, 85, 285, 85, L_width=7, T_width=25, height=3)
     tab_class.insert_label_text("특이사항", 10, 145, 10, 170, T_width=68, height=10)
     
     tab_class.gen_button_fs("입력", empty_function, 440, 315)

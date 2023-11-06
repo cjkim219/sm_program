@@ -4,10 +4,9 @@ import pymysql
 
 import config_set as con
 
-def clear_entry(target):
+def clear(target):
     target.delete(0, tk.END) 
     
-
         
 class window_set:
     def __init__(self, window):
@@ -16,6 +15,7 @@ class window_set:
         self.label = ""
         self.entry = ""
         self.text = ""
+        self.listbox = ""
         
     def set_title(self, title):
         self.new_window.title(title)
@@ -54,6 +54,10 @@ class window_set:
         self.label = tk.Label(self.new_window, text=label_text)
         self.label.place(x=l_x, y=l_y)
         
+    def gen_entry(self, var, e_x, e_y, E_width):
+        self.entry = tk.Entry(self.new_window, width=E_width, textvariable=var)
+        self.entry.place(x=e_x, y=e_y)
+        return self.entry
         
     def label_ntxt(self, new_text):
         self.label.config(text=new_text)
@@ -74,6 +78,12 @@ class window_set:
     # ex) 기본정보 + 수업정보 + 상담내용 + 성적결과 네 개의 탭이 하나의 노트북에 담김
     def gen_notebook(self, width, height):
         return ttk.Notebook(self.new_window, width=width, height=height)
+    
+    def gen_list_box(self, pos, rely):
+        self.listbox = tk.Listbox(self.new_window, width=13, height=13, selectmode="single")
+        self.listbox.configure(font=10)
+        self.listbox.place(x=pos, rely=rely)
+        return self.listbox
         
     # 이미지 삽입 메서드, subsample이라는 메서드로 그림 크기를 해당 배율만큼 줄여줌. (15, 15) -> 가로, 세로 15배 축소
     def insert_image(self, image_path, i_x, i_y):
@@ -149,17 +159,35 @@ class mysql_set:
         self.result = []
         
     ### mysql query functions
-    def insert_query(self, columns, values):
+    def insert_query_value(self, columns, values):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
                 # sql = "INSERT INTO 테이블명 (열1, 열2, 열3) VALUES (%s, %s, %s)"
-                sql = "INSERT INTO " + con.table_name + " " + columns + " VALUES " + values
+                sql = f"INSERT INTO main_table ({columns}) VALUES ({values})"
+                print(sql)
+                # sql = "INSERT INTO " + con.table_name + " " + "(" + columns + ")" +" VALUES " + "(" + values + ")"
                 ######################
                 ## sql string 편집
                 ######################
                     
+                cur.execute(sql)
+                conn.commit()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+            
+    def insert_query_str(self, columns, values):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"INSERT INTO main_table ({columns}) VALUES ('{values}')"
                 cur.execute(sql)
                 conn.commit()
                     
@@ -176,7 +204,7 @@ class mysql_set:
         try:
             with conn.cursor() as cur:
                 # sql = "SELECT 열1, 열2 FROM 테이블명 WHERE 조건"
-                sql = "SELECT " + columns + " FROM " + con.table_name + " WHERE " + conditions
+                sql = f"SELECT {columns} FROM {con.table_name} WHERE {conditions}"
                 ######################
                 ## sql string 편집
                 ######################
@@ -194,3 +222,80 @@ class mysql_set:
             conn.close()
             
         return result
+    
+    
+    def select_query_distinct_cond(self, columns, conditions):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT DISTINCT {columns} FROM {con.table_name} WHERE {conditions}"
+                print(sql)
+                cur.execute(sql)
+                result = cur.fetchall()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
+    def select_query_distinct(self, columns):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT DISTINCT {columns} FROM {con.table_name}"
+                cur.execute(sql)
+                result = cur.fetchall()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
+    
+def show_list_box_cond(Listbox, columns, conditions):
+    
+    sql_set = mysql_set(con.config)
+    res = sql_set.select_query_distinct_cond(columns, conditions)
+    clear(Listbox)
+    for row in res:
+        Listbox.insert(tk.END, row)
+        
+        
+def show_list_box(Listbox, columns):
+    
+    sql_set = mysql_set(con.config)
+    res = sql_set.select_query_distinct(columns)
+    clear(Listbox)
+    for row in res:
+        Listbox.insert(tk.END, row)
+        
+
+
+def get_selectitem(Frame_class, T_list):
+        
+    index = T_list.curselection()
+    
+    if index:
+        item = str(T_list.get(index))
+        return item[2:len(item)-3]
+        
+    else:
+        sub_wd = Frame_class.sub_wd()
+        sub_wd.title("오류")
+        label = tk.Label(sub_wd, text="선생님 항목을 선택해주세요.", anchor="center")
+        label.place(x=10, y=10)
+        btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
+        btn.place(x=10, y=30)
+        return False
+        
+    
