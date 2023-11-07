@@ -79,8 +79,8 @@ class window_set:
     def gen_notebook(self, width, height):
         return ttk.Notebook(self.new_window, width=width, height=height)
     
-    def gen_list_box(self, pos, rely):
-        self.listbox = tk.Listbox(self.new_window, width=13, height=13, selectmode="single")
+    def gen_listbox(self, pos, rely):
+        self.listbox = tk.Listbox(self.new_window, width=13, height=13, selectmode="browse", activestyle="none")
         self.listbox.configure(font=10)
         self.listbox.place(x=pos, rely=rely)
         return self.listbox
@@ -164,14 +164,7 @@ class mysql_set:
         
         try:
             with conn.cursor() as cur:
-                # sql = "INSERT INTO 테이블명 (열1, 열2, 열3) VALUES (%s, %s, %s)"
-                sql = f"INSERT INTO main_table ({columns}) VALUES ({values})"
-                print(sql)
-                # sql = "INSERT INTO " + con.table_name + " " + "(" + columns + ")" +" VALUES " + "(" + values + ")"
-                ######################
-                ## sql string 편집
-                ######################
-                    
+                sql = f"INSERT INTO main_table ({columns}) VALUES ({values})"             
                 cur.execute(sql)
                 conn.commit()
                     
@@ -230,7 +223,6 @@ class mysql_set:
         try:
             with conn.cursor() as cur:
                 sql = f"SELECT DISTINCT {columns} FROM {con.table_name} WHERE {conditions}"
-                print(sql)
                 cur.execute(sql)
                 result = cur.fetchall()
                     
@@ -260,7 +252,23 @@ class mysql_set:
             
         return result
     
+    def delete_query_cond(self, conditions):
+        conn = pymysql.connect(**self.config)
     
+        try:
+            with conn.cursor() as cur:
+                sql = f"DELETE FROM main_table WHERE {conditions}"
+                cur.execute(sql)
+                conn.commit()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+            
+            
     
 def show_list_box_cond(Listbox, columns, conditions):
     
@@ -281,7 +289,7 @@ def show_list_box(Listbox, columns):
         
 
 
-def get_selectitem(Frame_class, T_list):
+def get_selectitem(Frame_class, T_list, errorText):
         
     index = T_list.curselection()
     
@@ -291,16 +299,17 @@ def get_selectitem(Frame_class, T_list):
         
     else:
         sub_wd = Frame_class.sub_wd()
-        Input_Error(sub_wd, "선생님 항목을 선택해주세요.")
+        Error_Box(sub_wd, errorText)
         return False
         
 
 def str_combine(str_1, str_2):
-    return str_1 + "', '" + str_2
+    return str(str_1) + "', '" + str(str_2)
 
 
-def Input_Error(sub_wd, text):
+def Error_Box(sub_wd, text):
     sub_wd.title("오류")
+    sub_wd.geometry(con.war_box_size)
     label = tk.Label(sub_wd, text=text, anchor="center")
     label.place(x=10, y=10)
     btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)

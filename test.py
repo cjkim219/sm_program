@@ -150,32 +150,28 @@
 # # login_wd.bind("<F11>", lambda event: login_wd.attributes("-fullscreen", not login_wd.attributes("-fullscreen")))
 # # login_wd.bind("<Escape>", lambda event: login_wd.attributes("-fullscreen", False))
 
-
 import tkinter as tk
 
-def show_selection():
-    selected_indices = listbox.curselection()
-    for index in selected_indices:
-        print(f"Selected item at index {index}: {listbox.get(index)}")
+def scroll_up():
+    listbox.yview("scroll", -1, "units")
 
-# 윈도우 생성
-window = tk.Tk()
-window.title("Listbox Selection Example")
+def scroll_down():
+    listbox.yview("scroll", 1, "units")
 
-# Listbox 생성
-listbox = tk.Listbox(window, selectmode=tk.MULTIPLE)
+app = tk.Tk()
+app.title("Listbox yview Example")
+
+# 리스트 박스 생성
+listbox = tk.Listbox(app)
+for i in range(1, 21):
+    listbox.insert(tk.END, f"Item {i}")
 listbox.pack()
 
-# 아이템 추가
-listbox.insert(tk.END, "아이템 1")
-listbox.insert(tk.END, "아이템 2")
-listbox.insert(tk.END, "아이템 3")
-listbox.insert(tk.END, "아이템 4")
-listbox.insert(tk.END, "아이템 5")
+# 스크롤 위 아래 버튼 생성
+scroll_up_button = tk.Button(app, text="위로 스크롤", command=scroll_up)
+scroll_up_button.pack()
 
-# 선택 버튼 클릭 시 선택 항목 표시
-select_button = tk.Button(window, text="Show Selection", command=show_selection)
-select_button.pack()
+scroll_down_button = tk.Button(app, text="아래로 스크롤", command=scroll_down)
+scroll_down_button.pack()
 
-# 윈도우 실행
-window.mainloop()
+app.mainloop()

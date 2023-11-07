@@ -1,9 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
 
 import base_function as bftn
 import button_function as btftn
-import config_set as con
+import account_data as acc
 
 
 
@@ -31,29 +30,29 @@ def gen_notebook(Frame_class, width, height):
     
     
     
-def Teacher_list_button(Frame_class, T_list):
+def Teacher_list_button(Frame_class, T_List, user_id):
     
-    var = tk.StringVar()
+    for author_id in acc.T_list_button_authority:
+        if acc.acc_to_tname[user_id.get()] == author_id:
+            var = tk.StringVar()
+            Frame_class.gen_button_fs("수정", empty_function, 115, 360)
+            T_entry = Frame_class.gen_entry(var, 50, 280, 15)
+            Frame_class.gen_button_fs("추가", lambda: btftn.add_T_listbox(Frame_class, T_List, T_entry, "teacher", var.get()), 55, 400)
+            Frame_class.gen_button_fs("삭제", lambda: btftn.delete_T_listbox(Frame_class, T_List), 115, 400)
         
-    Frame_class.gen_button_fs("수정", empty_function, 115, 360)
     
-    T_entry = Frame_class.gen_entry(var, 50, 280, 15)
-    Frame_class.gen_button_fs("추가", lambda: btftn.add_T_listbox(Frame_class, T_list, T_entry, "teacher", var.get()), 55, 400)
-    
-    Frame_class.gen_button_fs("삭제", empty_function, 115, 400)
-    
-def Class_list_button(Frame_class, C_list, T_list):
+def Class_list_button(Frame_class, C_List, T_List, user_id):
     
     var = tk.StringVar()
     
     Frame_class.gen_button_fs("수정", empty_function, 265, 360)
-    Frame_class.gen_button_fs("조회", empty_function, 265, 320)
+    Frame_class.gen_button_fs("조회", lambda: btftn.lookup_C_listbox(Frame_class, C_List, T_List), 265, 320)
     
     C_entry = Frame_class.gen_entry(var, 200, 280, 15)
-    Frame_class.gen_button_fs("추가", lambda: btftn.add_C_listbox(Frame_class, C_list, C_entry, T_list, 
+    Frame_class.gen_button_fs("추가", lambda: btftn.add_C_listbox(Frame_class, C_List, C_entry, T_List, user_id,
                                                                 "teacher, class_name", var.get()), 205, 400)
     
-    Frame_class.gen_button_fs("삭제", empty_function, 265, 400)
+    Frame_class.gen_button_fs("삭제", lambda: btftn.delete_C_listbox(Frame_class, C_List, user_id), 265, 400)
     
     
 def test_function(T_list, var):
@@ -67,11 +66,17 @@ def test_function(T_list, var):
     
     
     
-def Name_list_button(Frame_class):
+def Name_list_button(Frame_class, N_List, C_List, user_id):
+    
+    var = tk.StringVar()
+    
     Frame_class.gen_button_fs("이동", empty_function, 355, 360)
     Frame_class.gen_button_fs("수정", empty_function, 415, 360)
     Frame_class.gen_button_fs("조회", empty_function, 415, 320)
-    Frame_class.gen_button_fs("추가", empty_function, 355, 400)
+    
+    N_entry = Frame_class.gen_entry(var, 350, 280, 15)
+    Frame_class.gen_button_fs("추가", lambda: btftn.add_N_listbox(Frame_class, N_List, N_entry, C_List, user_id,
+                                                                "teacher, class_name, name", var.get()), 355, 400)
     Frame_class.gen_button_fs("삭제", empty_function, 415, 400)
     
     

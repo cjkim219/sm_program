@@ -8,6 +8,8 @@ main_screen_size = "1080x720"
 login_screen_title = "학생관리 프로그램"
 login_screen_size = "296x240"
 
+war_box_size = "200x80"
+
 logo_directory = r"..\picture\higher_math_logo.png"
 
 

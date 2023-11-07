@@ -23,7 +23,7 @@ def login_and_run_main_screen(login_screen, user_id, user_password):
                 main_screen.set_title(con.main_screen_title)
                 main_screen.set_size(con.main_screen_size)
                 main_screen.set_fullscreen()
-                ms.run_main_screen(main_screen)
+                ms.run_main_screen(main_screen, user_id)
                 
             else:
                 login_screen.label_ntxt("<<<  비밀번호를 확인해주세요  >>>")
