@@ -291,11 +291,17 @@ def get_selectitem(Frame_class, T_list):
         
     else:
         sub_wd = Frame_class.sub_wd()
-        sub_wd.title("오류")
-        label = tk.Label(sub_wd, text="선생님 항목을 선택해주세요.", anchor="center")
-        label.place(x=10, y=10)
-        btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
-        btn.place(x=10, y=30)
+        Input_Error(sub_wd, "선생님 항목을 선택해주세요.")
         return False
         
-    
+
+def str_combine(str_1, str_2):
+    return str_1 + "', '" + str_2
+
+
+def Input_Error(sub_wd, text):
+    sub_wd.title("오류")
+    label = tk.Label(sub_wd, text=text, anchor="center")
+    label.place(x=10, y=10)
+    btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
+    btn.place(x=10, y=30)
