@@ -1,6 +1,6 @@
 import tkinter as tk
 
-import base_function as baseftn
+import base_function as bftn
 import config_set as con
 import main_screen_function as msf
 import account_data as acc
@@ -16,7 +16,7 @@ def run_main_screen(main_screen, user_id):
     
 def top_frame(main_screen, user_id):
     Frame_1 = main_screen.gen_Frame(1, 110, "blue")
-    Frame_class = baseftn.window_set(Frame_1)
+    Frame_class = bftn.window_set(Frame_1)
     Frame_class.pack(tk.TOP, tk.X, 1)
         
     
@@ -34,30 +34,29 @@ def top_frame(main_screen, user_id):
     
 def mid_frame(main_screen, user_id):
     Frame_2 = main_screen.gen_Frame(1, 510, "black")
-    Frame_class = baseftn.window_set(Frame_2)
+    Frame_class = bftn.window_set(Frame_2)
     Frame_class.pack(tk.TOP, tk.X, 1)
     
     
     Frame_class.gen_label_rely_fs("선생님", 105, 0.05)
-    T_List = Frame_class.gen_listbox(50, 0.1)  
-    baseftn.show_list_box(T_List, "teacher")
-    msf.Teacher_list_button(Frame_class, T_List, user_id)
-    
+    T_List = Frame_class.gen_listbox(50, 0.1)
     Frame_class.gen_label_rely_fs("반 이름", 250, 0.05)
     C_List = Frame_class.gen_listbox(200, 0.1)
-    msf.Class_list_button(Frame_class, C_List, T_List, user_id)
-    
     Frame_class.gen_label_rely_fs("이름", 420, 0.05)
     N_List = Frame_class.gen_listbox(350, 0.1)
-    msf.Name_list_button(Frame_class, N_List, C_List, user_id)
-    
     Frame_class.gen_label_rely_fs("내용", 530, 0.05)
+    
+    bftn.show_list_box(T_List, "teacher")
+    
+    msf.Teacher_list_button(Frame_class, T_List, C_List, N_List, user_id)   
+    msf.Class_list_button(Frame_class, T_List, C_List, N_List, user_id)
+    msf.Name_list_button(Frame_class, C_List, N_List, user_id)
     msf.gen_notebook(Frame_class, 500, 350)
     
     
     
 def bot_frame(main_screen):
-    Frame_3 = baseftn.window_set(main_screen.gen_Frame(1, 100, "yellow"))
+    Frame_3 = bftn.window_set(main_screen.gen_Frame(1, 100, "yellow"))
     Frame_3.pack(tk.BOTTOM, tk.X, 1)
     
     
@@ -66,13 +65,13 @@ def root_mod(Frame_class, user_id):
     for author_id in acc.root_mode_authority:
         if acc.acc_to_tname[user_id.get()] == author_id:
             sub_wd = Frame_class.sub_wd()
-            root_mod_wd = baseftn.window_set(sub_wd)
+            root_mod_wd = bftn.window_set(sub_wd)
             root_mod_wd.set_title("관리자 모드")
             root_mod_wd.gen_button("종료", root_mod_wd.clear_wd, 30, 30)
             return 0
         
     sub_wd = Frame_class.sub_wd()
-    baseftn.Error_Box(sub_wd, "권한이 없습니다.")
+    bftn.Error_Box(sub_wd, "권한이 없습니다.")
         
         
     

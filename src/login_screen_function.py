@@ -1,6 +1,6 @@
 import tkinter as tk
 
-import base_function as baseftn
+import base_function as bftn
 import config_set as con
 import account_data as acc_data
 import main_screen as ms
@@ -19,7 +19,7 @@ def login_and_run_main_screen(login_screen, user_id, user_password):
             if user_password.get() == account_info[user_id.get()]:
                 login_screen.clear_wd()
                 main_wd = tk.Tk()
-                main_screen = baseftn.window_set(main_wd)
+                main_screen = bftn.window_set(main_wd)
                 main_screen.set_title(con.main_screen_title)
                 main_screen.set_size(con.main_screen_size)
                 main_screen.set_fullscreen()

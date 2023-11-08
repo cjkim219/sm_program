@@ -196,17 +196,9 @@ class mysql_set:
         
         try:
             with conn.cursor() as cur:
-                # sql = "SELECT 열1, 열2 FROM 테이블명 WHERE 조건"
                 sql = f"SELECT {columns} FROM {con.table_name} WHERE {conditions}"
-                ######################
-                ## sql string 편집
-                ######################
-                
                 cur.execute(sql)
-                result = cur.fetchall()    # result = cur.fetchone()
-                
-                # for row in result:
-                #     print(row)
+                result = cur.fetchall()    
                     
         except SyntaxError:
             print("syntax error")
@@ -301,6 +293,11 @@ def get_selectitem(Frame_class, T_list, errorText):
         sub_wd = Frame_class.sub_wd()
         Error_Box(sub_wd, errorText)
         return False
+    
+def get_value_from_sqlres(res):
+    print("res :", res)
+    length = len(str(res))
+    return str(res)[2:length-3]
         
 
 def str_combine(str_1, str_2):
@@ -314,3 +311,12 @@ def Error_Box(sub_wd, text):
     label.place(x=10, y=10)
     btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
     btn.place(x=10, y=30)
+    
+    
+def authority_check(query_result, check_data):
+    authority = False
+    for val in query_result:
+        if val[0] == check_data:
+            authority = True
+            break
+    return authority

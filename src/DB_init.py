@@ -8,4 +8,4 @@ import pymysql
 # : main_table
 
 # column 생성, 변수 type 고르기.
-# : teacher(VARCHAR), class_name(VARCHAR), name(VARCHAR)
+# : teacher(VARCHAR), class_name(VARCHAR), st_name(VARCHAR)

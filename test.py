@@ -152,26 +152,32 @@
 
 import tkinter as tk
 
-def scroll_up():
-    listbox.yview("scroll", -1, "units")
+def set_entry_value():
+    value = entry_var.get()  # Entry 위젯의 값을 가져옴
+    label.config(text=f"Entry 값: {value}")
 
-def scroll_down():
-    listbox.yview("scroll", 1, "units")
+def get_entry_value():
+    value = "새로운 값"  # 원하는 값으로 변경 가능
+    entry_var.set(value)  # Entry 위젯의 값을 설정
 
 app = tk.Tk()
-app.title("Listbox yview Example")
+app.title("Entry 값 보이기")
 
-# 리스트 박스 생성
-listbox = tk.Listbox(app)
-for i in range(1, 21):
-    listbox.insert(tk.END, f"Item {i}")
-listbox.pack()
+# Entry 위젯 생성
+entry_var = tk.StringVar()  # Entry 위젯의 값을 저장할 변수
+entry = tk.Entry(app, textvariable=entry_var)
+entry.pack()
 
-# 스크롤 위 아래 버튼 생성
-scroll_up_button = tk.Button(app, text="위로 스크롤", command=scroll_up)
-scroll_up_button.pack()
+# 값을 설정하는 버튼
+set_button = tk.Button(app, text="값 설정", command=set_entry_value)
+set_button.pack()
 
-scroll_down_button = tk.Button(app, text="아래로 스크롤", command=scroll_down)
-scroll_down_button.pack()
+# 값을 가져오는 버튼
+get_button = tk.Button(app, text="값 가져오기", command=get_entry_value)
+get_button.pack()
+
+# Entry 값 표시 레이블
+label = tk.Label(app, text="")
+label.pack()
 
 app.mainloop()

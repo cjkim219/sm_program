@@ -22,4 +22,8 @@ config = {
 
 table_name = "main_table"
 
+column_1 = "teacher"
+column_2 = "class_name"
+column_3 = "st_name"
+
 

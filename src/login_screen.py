@@ -1,12 +1,12 @@
 import tkinter as tk
-import base_function as baseftn
+import base_function as bftn
 import config_set as con
 import login_screen_function as lsf
 
 
 def run_login_screen(login_wd):
     
-    login_screen = baseftn.window_set(login_wd)
+    login_screen = bftn.window_set(login_wd)
     login_screen.set_title(con.login_screen_title)
     login_screen.set_size(con.login_screen_size)
     login_screen.insert_image(con.logo_directory, 10, 10)
