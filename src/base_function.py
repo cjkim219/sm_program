@@ -129,29 +129,7 @@ class window_set:
         
         
         
-def insert_label_entry(Frame, var, title, l_x, l_y, e_x, e_y, L_width=7, E_width=17):
-    label = tk.Label(Frame, text=title, width=L_width, anchor="e")
-    label.place(x=l_x, y=l_y)
-    entry = tk.Entry(Frame, width=E_width, textvariable=var)
-    entry.place(x=e_x, y=e_y)
-    
-def insert_label_text(Frame, lb_text, l_x, l_y, e_x, e_y, L_width=7, T_width=15, height=1):
-    label = tk.Label(Frame, text=lb_text, width=L_width)
-    label.place(x=l_x, y=l_y)
-    text = tk.Text(Frame, width=T_width, height=height)
-    text.place(x=e_x, y=e_y)
-    
-def gen_button_fs(Frame, bt_text, cm_ftn, b_x, b_y, font=1):
-    button = tk.Button(Frame, text=bt_text, command=cm_ftn, font=font)
-    button.place(x=b_x, y=b_y)
-    
-def gen_label_rely(Frame, lb_text, l_x, l_rely):
-    label = tk.Label(Frame, text=lb_text)
-    label.place(x=l_x, rely=l_rely)
-    
-    
-    
-    
+
 class mysql_set:
     def __init__(self, config):
         self.config = config
@@ -260,7 +238,35 @@ class mysql_set:
             conn.close()
             
             
-            
+        
+
+def insert_label_entry(Frame, var, title, l_x, l_y, e_x, e_y, L_width=7, E_width=17):
+    label = tk.Label(Frame, text=title, width=L_width, anchor="e")
+    label.place(x=l_x, y=l_y)
+    entry = tk.Entry(Frame, width=E_width, textvariable=var)
+    entry.place(x=e_x, y=e_y)
+    
+    
+    
+def insert_label_text(Frame, lb_text, l_x, l_y, e_x, e_y, L_width=7, T_width=15, height=1):
+    label = tk.Label(Frame, text=lb_text, width=L_width)
+    label.place(x=l_x, y=l_y)
+    text = tk.Text(Frame, width=T_width, height=height)
+    text.place(x=e_x, y=e_y)
+    
+    
+    
+def gen_button_fs(Frame, bt_text, cm_ftn, b_x, b_y, font=1):
+    button = tk.Button(Frame, text=bt_text, command=cm_ftn, font=font)
+    button.place(x=b_x, y=b_y)
+    
+    
+    
+def gen_label_rely(Frame, lb_text, l_x, l_rely):
+    label = tk.Label(Frame, text=lb_text)
+    label.place(x=l_x, rely=l_rely)
+    
+    
     
 def show_list_box_cond(Listbox, columns, conditions):
     
@@ -269,6 +275,7 @@ def show_list_box_cond(Listbox, columns, conditions):
     clear(Listbox)
     for row in res:
         Listbox.insert(tk.END, row)
+        
         
         
 def show_list_box(Listbox, columns):
@@ -286,22 +293,18 @@ def get_selectitem(Frame_class, T_list, errorText):
     index = T_list.curselection()
     
     if index:
-        item = str(T_list.get(index))
-        return item[2:len(item)-3]
+        return T_list.get(index)[0]
         
     else:
         sub_wd = Frame_class.sub_wd()
         Error_Box(sub_wd, errorText)
         return False
-    
-def get_value_from_sqlres(res):
-    print("res :", res)
-    length = len(str(res))
-    return str(res)[2:length-3]
+        
         
 
 def str_combine(str_1, str_2):
     return str(str_1) + "', '" + str(str_2)
+
 
 
 def Error_Box(sub_wd, text):
@@ -311,6 +314,7 @@ def Error_Box(sub_wd, text):
     label.place(x=10, y=10)
     btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
     btn.place(x=10, y=30)
+    
     
     
 def authority_check(query_result, check_data):

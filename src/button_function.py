@@ -77,6 +77,7 @@ def add_C_listbox(Frame_class, C_List, C_entry, user_id, Columns, Values):
 def lookup_C_listbox(Frame_class, C_List, T_List, N_List):
     
     select_data = bftn.get_selectitem(Frame_class, T_List, "선생님 항목을 선택해주세요.")
+    
     if select_data == False:
         return 0
     else:
