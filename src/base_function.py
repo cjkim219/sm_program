@@ -4,10 +4,7 @@ import pymysql
 
 import config_set as con
 
-def clear(target):
-    target.delete(0, tk.END) 
-    
-        
+
 class window_set:
     def __init__(self, window):
         self.new_window = window
@@ -16,6 +13,7 @@ class window_set:
         self.entry = ""
         self.text = ""
         self.listbox = ""
+        self.combobox = ""
         
     def set_title(self, title):
         self.new_window.title(title)
@@ -53,11 +51,18 @@ class window_set:
     def gen_label(self, label_text, l_x, l_y):
         self.label = tk.Label(self.new_window, text=label_text)
         self.label.place(x=l_x, y=l_y)
+                
         
     def gen_entry(self, var, e_x, e_y, E_width):
         self.entry = tk.Entry(self.new_window, width=E_width, textvariable=var)
         self.entry.place(x=e_x, y=e_y)
         return self.entry
+        
+    
+    def gen_textbox(self, t_x, t_y, T_width, height):
+        self.text = tk.Text(self.new_window, width=T_width, height=height)
+        self.text.place(x=t_x, y=t_y)
+        
         
     def label_ntxt(self, new_text):
         self.label.config(text=new_text)
@@ -79,9 +84,18 @@ class window_set:
     def gen_notebook(self, width, height):
         return ttk.Notebook(self.new_window, width=width, height=height)
     
-    def gen_listbox(self, pos, rely):
+    def gen_combobox(self, options, C_width, c_x, c_y):
+        self.combobox = ttk.Combobox(self.new_window, values=options, width=C_width)
+        self.combobox.place(x=c_x, y=c_y)
+    
+    def gen_listbox_fs(self, pos, rely):
         self.listbox = tk.Listbox(self.new_window, width=13, height=13, selectmode="browse", activestyle="none")
         self.listbox.configure(font=10)
+        self.listbox.place(x=pos, rely=rely)
+        return self.listbox
+    
+    def gen_listbox_bs(self, pos, rely, Lb_width, Lb_height):
+        self.listbox = tk.Listbox(self.new_window, width=Lb_width, height=Lb_height, selectmode="browse", activestyle="none")
         self.listbox.place(x=pos, rely=rely)
         return self.listbox
         
@@ -110,11 +124,11 @@ class window_set:
         self.entry.place(x=e_x, y=e_y)
         
     # 라벨 + 텍스트 삽입 메서드, height는 텍스트 라인 갯수를 의미함.
-    def insert_label_text(self, lb_text, l_x, l_y, e_x, e_y, L_width=7, T_width=15, height=1):
+    def insert_label_text(self, lb_text, l_x, l_y, t_x, t_y, L_width=7, T_width=15, height=1):
         self.label = tk.Label(self.new_window, text=lb_text, width=L_width)
         self.label.place(x=l_x, y=l_y)
         self.text = tk.Text(self.new_window, width=T_width, height=height)
-        self.text.place(x=e_x, y=e_y)
+        self.text.place(x=t_x, y=t_y)
         
     # place는 해당 좌표에 상자가 만들어지는데 pack은 좌, 위, 상, 하 등의 정렬을 할 수 있음. 단점은 세부 컨트롤이 어려움.
     def pack(self, side, fill, expand):
@@ -239,7 +253,11 @@ class mysql_set:
             
             
         
-
+def clear(target):
+    target.delete(0, tk.END)
+    
+    
+    
 def insert_label_entry(Frame, var, title, l_x, l_y, e_x, e_y, L_width=7, E_width=17):
     label = tk.Label(Frame, text=title, width=L_width, anchor="e")
     label.place(x=l_x, y=l_y)

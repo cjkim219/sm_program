@@ -39,11 +39,11 @@ def mid_frame(main_screen, user_id):
     
     
     Frame_class.gen_label_rely_fs("선생님", 105, 0.05)
-    T_List = Frame_class.gen_listbox(50, 0.1)
+    T_List = Frame_class.gen_listbox_fs(50, 0.1)
     Frame_class.gen_label_rely_fs("반 이름", 250, 0.05)
-    C_List = Frame_class.gen_listbox(200, 0.1)
+    C_List = Frame_class.gen_listbox_fs(200, 0.1)
     Frame_class.gen_label_rely_fs("이름", 420, 0.05)
-    N_List = Frame_class.gen_listbox(350, 0.1)
+    N_List = Frame_class.gen_listbox_fs(350, 0.1)
     Frame_class.gen_label_rely_fs("내용", 530, 0.05)
     
     bftn.show_list_box(T_List, "teacher")
