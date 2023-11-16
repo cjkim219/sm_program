@@ -22,9 +22,22 @@ config = {
 
 table_name = "main_table"
 
-column_1 = "teacher"
-column_2 = "class_name"
-column_3 = "st_name"
+column = ["teacher", "class_name", "st_name", "age", "gender", "school", "grade", 
+          "birth", "st_HP", "pa_HP", "email", "address", "etc", "course", "class_day",
+          "day1", "day2", "day3", "day1_start", "day1_end", "day2_start", "day2_end",
+          "day3_start", "day3_end", "main_book", "main_start_date", "main_end_date",
+          "sub_book", "sub_start_date", "sub_end_date", "text1", "text2"]
+
+column_type = ["VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "CHAR(5)", "CHAR(5)", "VARCHAR(50)", "CHAR(5)", 
+               "VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "TEXT", "TEXT", "VARCHAR(50)",
+               "CHAR(20)", "CHAR(5)", "CHAR(5)", "CHAR(5)", "CHAR(20)", "CHAR(20)", "CHAR(20)", "CHAR(20)",
+               "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "CHAR(20)",
+               "CHAR(20)", "TEXT", "TEXT"]
 
 
-class_time = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"]
+
+class_time = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",
+              "20:30", "21:00", "21:30", "22:00"]
+
+
+db_info_length = 32

@@ -129,6 +129,7 @@ class window_set:
         self.label.place(x=l_x, y=l_y)
         self.text = tk.Text(self.new_window, width=T_width, height=height)
         self.text.place(x=t_x, y=t_y)
+        return self.text
         
     # place는 해당 좌표에 상자가 만들어지는데 pack은 좌, 위, 상, 하 등의 정렬을 할 수 있음. 단점은 세부 컨트롤이 어려움.
     def pack(self, side, fill, expand):
@@ -252,7 +253,97 @@ class mysql_set:
             conn.close()
             
             
+    def update_query_value(self, update_data, conditions):
+        conn = pymysql.connect(**self.config)
+    
+        try:
+            with conn.cursor() as cur:
+                sql = f"UPDATE {con.table_name} SET {update_data} WHERE {conditions}"
+                cur.execute(sql)
+                conn.commit()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+            
+
+
+class student_info:
+    def __init__(self):
+        self.age_var = tk.StringVar()
+        self.gender_var = tk.StringVar()
+        self.school_var = tk.StringVar()
+        self.grade_var = tk.StringVar()
+        self.birth_var = tk.StringVar()
+        self.st_HP_var = tk.StringVar()
+        self.pa_HP_var = tk.StringVar()
+        self.email_var = tk.StringVar()
+        self.address = tk.Text()
+        self.etc = tk.Text()
         
+        self.course_var = tk.StringVar()
+        self.class_day_var = tk.StringVar()
+        self.day1_var = tk.StringVar()
+        self.day2_var = tk.StringVar()
+        self.day3_var = tk.StringVar()
+        self.day1_start_var = tk.StringVar()
+        self.day1_end_var = tk.StringVar()
+        self.day2_start_var = tk.StringVar()
+        self.day2_end_var = tk.StringVar()
+        self.day3_start_var = tk.StringVar()
+        self.day3_end_var = tk.StringVar()
+        
+        self.main_book_var = tk.StringVar()
+        self.main_start_date_var = tk.StringVar()
+        self.main_end_date_var = tk.StringVar()
+        self.sub_book_var = tk.StringVar()
+        self.sub_start_date_var = tk.StringVar()
+        self.sub_end_date_var = tk.StringVar()
+        self.text1_var = tk.Text()
+        self.text2_var = tk.StringVar()
+        
+    
+    def clear(self):
+        self.age_var.set("")
+        self.gender_var.set("")
+        self.school_var.set("")
+        self.grade_var.set("")
+        self.birth_var.set("")
+        self.st_HP_var.set("")
+        self.pa_HP_var.set("")
+        self.email_var.set("")
+        self.address.delete("1.0", tk.END)
+        self.etc.delete("1.0", tk.END)
+        
+        self.course_var.set("")
+        self.class_day_var.set("")
+        self.day1_var.set("")
+        self.day2_var.set("")
+        self.day3_var.set("")
+        self.day1_start_var.set("")
+        self.day1_end_var.set("")
+        self.day2_start_var.set("")
+        self.day2_end_var.set("")
+        self.day3_start_var.set("")
+        self.day3_end_var.set("")
+        
+        self.main_book_var.set("")
+        self.main_start_date_var.set("")
+        self.main_end_date_var.set("")
+        self.sub_book_var.set("")
+        self.sub_start_date_var.set("")
+        self.sub_end_date_var.set("")
+        self.text1_var.delete("1.0", tk.END)
+        self.text2_var.set("")
+
+
+        
+        
+        
+            
 def clear(target):
     target.delete(0, tk.END)
     
@@ -294,6 +385,78 @@ def show_list_box_cond(Listbox, columns, conditions):
     for row in res:
         Listbox.insert(tk.END, row)
         
+        
+def show_info_cond(student_info, conditions):
+    
+    sql_set = mysql_set(con.config)
+    res = sql_set.select_query("*", conditions)
+    
+    student_info.clear()
+    for i in range(3, con.db_info_length):
+        if res[0][i] != None:
+            show_value(i, student_info, res[0][i])
+
+            
+def show_value(int, student_info, value):
+    if int == 3:
+        student_info.age_var.set(value)
+    elif int == 4:
+        student_info.gender_var.set(value)
+    elif int == 5:
+        student_info.school_var.set(value)
+    elif int == 6:
+        student_info.grade_var.set(value)
+    elif int == 7:
+        student_info.birth_var.set(value)
+    elif int == 8:
+        student_info.st_HP_var.set(value)
+    elif int == 9:
+        student_info.pa_HP_var.set(value)
+    elif int == 10:
+        student_info.email_var.set(value)
+    elif int == 11:
+        student_info.address.insert(tk.END, value)
+    elif int == 12:
+        student_info.etc.insert(tk.END, value)
+    elif int == 13:
+        student_info.course_var.set(value)
+    elif int == 14:
+        student_info.class_day_var.set(value)
+    elif int == 15:
+        student_info.day1_var.set(value)
+    elif int == 16:
+        student_info.day2_var.set(value)
+    elif int == 17:
+        student_info.day3_var.set(value)
+    elif int == 18:
+        student_info.day1_start_var.set(value)
+    elif int == 19:
+        student_info.day1_end_var.set(value)
+    elif int == 20:
+        student_info.day2_start_var.set(value)
+    elif int == 21:
+        student_info.day2_end_var.set(value)
+    elif int == 22:
+        student_info.day3_start_var.set(value)
+    elif int == 23:
+        student_info.day3_end_var.set(value)
+    elif int == 24:
+        student_info.main_book_var.set(value)
+    elif int == 25:
+        student_info.main_start_date_var.set(value)
+    elif int == 26:
+        student_info.main_end_date_var.set(value)
+    elif int == 27:
+        student_info.sub_book_var.set(value)
+    elif int == 28:
+        student_info.sub_start_date_var.set(value)
+    elif int == 29:
+        student_info.sub_end_date_var.set(value)
+    elif int == 30:
+        student_info.text1_var.insert(tk.END, value)
+    elif int == 31:
+        student_info.text2_var.set(value)
+            
         
         
 def show_list_box(Listbox, columns):
@@ -342,3 +505,52 @@ def authority_check(query_result, check_data):
             authority = True
             break
     return authority
+
+
+def add_col_val_list(list, col_num, val):
+    
+    if val == "":
+        return 0
+    elif val == "\n":
+        return 0
+    else:
+        list.append(f"{con.column[col_num]} = '{val}'")
+        
+        
+def get_text(tk_text):
+    return tk_text.get("1.0", tk.END)
+    
+    
+def list_to_str(list):
+    
+    string = str()
+    
+    for val in list:
+        string += (val + ", ")
+        
+    return string[0:len(string)-2]
+
+
+def list_to_val(list):
+    
+    string = str(list)
+    
+    return string[1:len(string)-1]
+
+
+
+def add_table_query(start):
+    conn = pymysql.connect(**con.config)
+    
+    try:
+        with conn.cursor() as cur:
+            for i in range(start, con.db_info_length):
+                sql = f"ALTER TABLE {con.table_name} ADD COLUMN {con.column[i]} {con.column_type[i]}"
+                cur.execute(sql)
+            conn.commit()
+                
+    except SyntaxError:
+        print("syntax error")
+        
+    finally:
+        conn.close()

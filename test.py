@@ -150,57 +150,32 @@
 # # login_wd.bind("<F11>", lambda event: login_wd.attributes("-fullscreen", not login_wd.attributes("-fullscreen")))
 # # login_wd.bind("<Escape>", lambda event: login_wd.attributes("-fullscreen", False))
 
-# import tkinter as tk
-
-# def set_entry_value():
-#     value = entry_var.get()  # Entry 위젯의 값을 가져옴
-#     label.config(text=f"Entry 값: {value}")
-
-# def get_entry_value():
-#     value = "새로운 값"  # 원하는 값으로 변경 가능
-#     entry_var.set(value)  # Entry 위젯의 값을 설정
-
-# app = tk.Tk()
-# app.title("Entry 값 보이기")
-
-# # Entry 위젯 생성
-# entry_var = tk.StringVar()  # Entry 위젯의 값을 저장할 변수
-# entry = tk.Entry(app, textvariable=entry_var)
-# entry.pack()
-
-# # 값을 설정하는 버튼
-# set_button = tk.Button(app, text="값 설정", command=set_entry_value)
-# set_button.pack()
-
-# # 값을 가져오는 버튼
-# get_button = tk.Button(app, text="값 가져오기", command=get_entry_value)
-# get_button.pack()
-
-# # Entry 값 표시 레이블
-# label = tk.Label(app, text="")
-# label.pack()
-
-# app.mainloop()
 
 
-import tkinter as tk
 
-def on_button_click():
-    # Entry 상자의 값을 가져와서 출력
-    entry_value = entry.get()
-    print(f"Entered value: {entry_value}")
 
-# Tkinter 윈도우 생성
-root = tk.Tk()
-root.title("Disabled Entry Example")
+# sample_list = ['age', 'gender']
 
-# Entry 상자 생성 및 DISABLED로 설정
-entry = tk.Entry(root, state=tk.DISABLED)
-entry.grid(row=0, column=0, padx=10, pady=10)
+# print(sample_list)
 
-# 버튼 생성 및 클릭 이벤트 처리
-button = tk.Button(root, text="Get Value", command=on_button_click)
-button.grid(row=1, column=0, padx=10, pady=10)
+# sample_str = str()
 
-# 윈도우 실행
-root.mainloop()
+# for val in sample_list:
+#     print(val)
+#     sample_str += (val + ", ")
+    
+    
+# print(sample_str[0:len(sample_str)-2])
+
+column = ["teacher", "class_name", "st_name", "age", "gender", "school", "grade", 
+          "birth", "st_HP", "pa_HP", "email", "address", "etc", "course", "class_day",
+          "day1", "day2", "day3", "day1_start", "day1_end", "day2_start", "day2_end",
+          "day3_start", "day3_end", "main_book", "main_start_date", "main_end_date",
+          "sub_book", "sub_start_date", "sub_end_date", "text1", "text2"]
+
+
+sample = ["abc", "def"]
+
+print(len(column))
+
+print(len(sample))

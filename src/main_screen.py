@@ -51,7 +51,7 @@ def mid_frame(main_screen, user_id):
     msf.Teacher_list_button(Frame_class, T_List, C_List, N_List, user_id)   
     msf.Class_list_button(Frame_class, T_List, C_List, N_List, user_id)
     msf.Name_list_button(Frame_class, C_List, N_List, user_id)
-    msf.gen_notebook(Frame_class, 500, 350)
+    msf.gen_notebook(Frame_class, N_List, user_id, 500, 350)
     
     
     
