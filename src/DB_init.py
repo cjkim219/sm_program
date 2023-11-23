@@ -6,3 +6,7 @@ import base_function as bftn
 # : info
 
 bftn.add_table_query(0)
+
+
+
+# 상담 table 생성, column 생성

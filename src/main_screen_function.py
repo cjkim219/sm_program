@@ -13,6 +13,7 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     notebook.place(x=530, rely=0.1)
     
     student_info = bftn.student_info()
+    consult_content = bftn.consult_content()
     
     tab1 = tk.Frame(notebook)
     notebook.add(tab1, text="기본정보")
@@ -22,16 +23,16 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     notebook.add(tab2, text="수업정보")
     class_info(tab2, student_info, N_List, user_id)
     
-    Frame_class.gen_button_fs("조회", lambda: btftn.lookup_info(Frame_class, N_List, student_info), 415, 320)
-    
-    
     tab3 = tk.Frame(notebook)
     notebook.add(tab3, text="상담내용")
-    consult_info(tab3)
+    consult_date_list = consult_info(tab3, consult_content, N_List, user_id)
     
     tab4 = tk.Frame(notebook)   
     notebook.add(tab4, text="시험결과")
     info_exam(tab4)
+    
+    Frame_class.gen_button_fs("조회", lambda: btftn.lookup_info(Frame_class, N_List, student_info,
+                                                              consult_content, consult_date_list), 415, 320)
     
     
     
@@ -150,7 +151,7 @@ def class_info(tab, student_info, N_List, user_id):
     tab_class.gen_label("~", 140, 115)
     tab_class.gen_entry(student_info.day3_end_var, 160, 115, 8)
     
-    student_info.text1_var = tab_class.insert_label_text("● 특이사항", 125, 12, 250, 40, 40, 32, 10)
+    student_info.text1 = tab_class.insert_label_text("● 특이사항", 125, 12, 250, 40, 40, 32, 10)
     
     
     tab_class.gen_label_rely("● 진행중인 교재", 10, 0.5)
@@ -168,29 +169,27 @@ def class_info(tab, student_info, N_List, user_id):
     tab_class.gen_button("부교재 종료", empty_function, 339, 280)
     tab_class.gen_button_bs("완료 항목으로 이동", empty_function, 22, 1, 70, 310)
     tab_class.gen_button_bs("완료된 교재", empty_function, 22, 1, 250, 310)
-    tab_class.gen_button_bs("입력", empty_function, 6, 3, 428, 280)
+    tab_class.gen_button_bs("입력", lambda: btftn.add_class_info(tab_class, N_List, user_id, student_info), 6, 3, 428, 280)
     
     
     
-def consult_info(tab):
+def consult_info(tab, consult_content, N_List, user_id):
     
     tab_class = bftn.window_set(tab)
     
-    subject_var = tk.StringVar()
-    date_var = tk.StringVar()
+    tab_class.insert_label_entry(consult_content.subject_var, "상담주제", 10, 10, 75, 10, 7, 25)
+    tab_class.insert_label_entry(consult_content.date_var, "상담일자", 283, 10, 348, 10, 7, 18)
+    consult_content.content = tab_class.insert_label_text("상담내용", 10, 40, 15, 65, 7, 66, 17)
     
-    # db로부터 상담일자 받아와서 콤보박스 옵션 만들도록...
-    option = ["23-11-14"]
-    tab_class.insert_label_entry(subject_var, "상담주제", 10, 10, 75, 10, 7, 25)
-    tab_class.insert_label_entry(date_var, "상담일자", 283, 10, 348, 10, 7, 18)
-    tab_class.insert_label_text("상담내용", 10, 40, 15, 65, 7, 66, 17)
-    tab_class.gen_combobox(option, 12, 15, 305)
+    option = []
+    consult_date_list = tab_class.gen_combobox(option, 12, 15, 305)
     
     tab_class.gen_button_fs("조회", empty_function, 256, 305)
     tab_class.gen_button_fs("수정", empty_function, 316, 305)
     tab_class.gen_button_fs("삭제", empty_function, 376, 305)
-    tab_class.gen_button_fs("입력", empty_function, 436, 305)
+    tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, N_List, user_id, consult_content, consult_date_list), 436, 305)
     
+    return consult_date_list
 
     
 def info_exam(tab):

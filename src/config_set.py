@@ -32,7 +32,14 @@ column_type = ["VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "CHAR(5)", "CHAR(5)"
                "VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "TEXT", "TEXT", "VARCHAR(50)",
                "CHAR(20)", "CHAR(5)", "CHAR(5)", "CHAR(5)", "CHAR(20)", "CHAR(20)", "CHAR(20)", "CHAR(20)",
                "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "CHAR(20)",
-               "CHAR(20)", "TEXT", "TEXT"]
+               "CHAR(20)", "TEXT", "VARCHAR(50)"]
+
+
+consult_table_name = "consult"
+
+consult_column = ["st_name", "date", "subject", "content"]
+
+consult_column_type = ["VARCHAR(50)", "DATE", "VARCHAR(50)", "TEXT"]
 
 
 
@@ -40,4 +47,4 @@ class_time = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",
               "20:30", "21:00", "21:30", "22:00"]
 
 
-db_info_length = 32
+db_info_length = len(column)

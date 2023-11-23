@@ -1,6 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
+
+from datetime import datetime
+
 import pymysql
+
 
 import config_set as con
 
@@ -87,6 +91,7 @@ class window_set:
     def gen_combobox(self, options, C_width, c_x, c_y):
         self.combobox = ttk.Combobox(self.new_window, values=options, width=C_width)
         self.combobox.place(x=c_x, y=c_y)
+        return self.combobox
     
     def gen_listbox_fs(self, pos, rely):
         self.listbox = tk.Listbox(self.new_window, width=13, height=13, selectmode="browse", activestyle="none")
@@ -152,12 +157,12 @@ class mysql_set:
         self.result = []
         
     ### mysql query functions
-    def insert_query_value(self, columns, values):
+    def insert_query_value(self, columns, values, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
-                sql = f"INSERT INTO main_table ({columns}) VALUES ({values})"             
+                sql = f"INSERT INTO {table} ({columns}) VALUES ({values})"             
                 cur.execute(sql)
                 conn.commit()
                     
@@ -168,12 +173,12 @@ class mysql_set:
             conn.close()
             
             
-    def insert_query_str(self, columns, values):
+    def insert_query_str(self, columns, values, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
-                sql = f"INSERT INTO main_table ({columns}) VALUES ('{values}')"
+                sql = f"INSERT INTO {table} ({columns}) VALUES ('{values}')"
                 cur.execute(sql)
                 conn.commit()
                     
@@ -184,12 +189,12 @@ class mysql_set:
             conn.close()
             
 
-    def select_query(self, columns, conditions):
+    def select_query(self, columns, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
-                sql = f"SELECT {columns} FROM {con.table_name} WHERE {conditions}"
+                sql = f"SELECT {columns} FROM {table} WHERE {conditions}"
                 cur.execute(sql)
                 result = cur.fetchall()    
                     
@@ -202,12 +207,12 @@ class mysql_set:
         return result
     
     
-    def select_query_distinct_cond(self, columns, conditions):
+    def select_query_distinct_cond(self, columns, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
-                sql = f"SELECT DISTINCT {columns} FROM {con.table_name} WHERE {conditions}"
+                sql = f"SELECT DISTINCT {columns} FROM {table} WHERE {conditions}"
                 cur.execute(sql)
                 result = cur.fetchall()
                     
@@ -220,12 +225,12 @@ class mysql_set:
         return result
     
     
-    def select_query_distinct(self, columns):
+    def select_query_distinct(self, columns, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
-                sql = f"SELECT DISTINCT {columns} FROM {con.table_name}"
+                sql = f"SELECT DISTINCT {columns} FROM {table}"
                 cur.execute(sql)
                 result = cur.fetchall()
                     
@@ -237,12 +242,12 @@ class mysql_set:
             
         return result
     
-    def delete_query_cond(self, conditions):
+    def delete_query_cond(self, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)
     
         try:
             with conn.cursor() as cur:
-                sql = f"DELETE FROM main_table WHERE {conditions}"
+                sql = f"DELETE FROM {table} WHERE {conditions}"
                 cur.execute(sql)
                 conn.commit()
                     
@@ -253,12 +258,12 @@ class mysql_set:
             conn.close()
             
             
-    def update_query_value(self, update_data, conditions):
+    def update_query_value(self, update_data, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)
     
         try:
             with conn.cursor() as cur:
-                sql = f"UPDATE {con.table_name} SET {update_data} WHERE {conditions}"
+                sql = f"UPDATE {table} SET {update_data} WHERE {conditions}"
                 cur.execute(sql)
                 conn.commit()
                     
@@ -302,7 +307,7 @@ class student_info:
         self.sub_book_var = tk.StringVar()
         self.sub_start_date_var = tk.StringVar()
         self.sub_end_date_var = tk.StringVar()
-        self.text1_var = tk.Text()
+        self.text1 = tk.Text()
         self.text2_var = tk.StringVar()
         
     
@@ -336,10 +341,21 @@ class student_info:
         self.sub_book_var.set("")
         self.sub_start_date_var.set("")
         self.sub_end_date_var.set("")
-        self.text1_var.delete("1.0", tk.END)
+        self.text1.delete("1.0", tk.END)
         self.text2_var.set("")
 
 
+        
+class consult_content:
+    def __init__(self):
+        self.date_var = tk.StringVar()
+        self.subject_var = tk.StringVar()
+        self.content = tk.Text()
+        
+    def clear(self):
+        self.date_var.set("")
+        self.subject_var.set("")
+        self.content.delete("1.0", tk.END)
         
         
         
@@ -453,7 +469,7 @@ def show_value(int, student_info, value):
     elif int == 29:
         student_info.sub_end_date_var.set(value)
     elif int == 30:
-        student_info.text1_var.insert(tk.END, value)
+        student_info.text1.insert(tk.END, value)
     elif int == 31:
         student_info.text2_var.set(value)
             
@@ -497,7 +513,6 @@ def Error_Box(sub_wd, text):
     btn.place(x=10, y=30)
     
     
-    
 def authority_check(query_result, check_data):
     authority = False
     for val in query_result:
@@ -515,6 +530,16 @@ def add_col_val_list(list, col_num, val):
         return 0
     else:
         list.append(f"{con.column[col_num]} = '{val}'")
+        
+        
+def add_col_val_list_consult(list, col_num, val):
+    
+    if val == "":
+        return 0
+    elif val == "\n":
+        return 0
+    else:
+        list.append(f"{con.consult_column[col_num]} = '{val}'")
         
         
 def get_text(tk_text):
@@ -554,3 +579,47 @@ def add_table_query(start):
         
     finally:
         conn.close()
+        
+        
+def combobox_list_update(cond, combobox, cond_column_1, cond_column_2):
+    
+    sql_set = mysql_set(con.config)
+    
+    update_list = []
+    conditions = f"{cond_column_1} = '{cond}'"
+    
+    res = sql_set.select_query(f"{cond_column_2}", conditions, con.consult_table_name)
+
+    for val in res:
+        order_date = val[0]
+        formatted_date = order_date.strftime("%Y-%m-%d")
+        update_list.append(str(formatted_date))
+
+    combobox['values'] = update_list
+    
+    
+    
+# def get_option_date(cond, cond_column_1, cond_column_2):
+    
+#     sql_set = mysql_set(con.config)
+    
+#     option = []
+#     conditions = f"{cond_column_1} = '{cond}'"
+    
+#     res = sql_set.select_query(f"{cond_column_2}", conditions, con.consult_table_name)
+
+#     for val in res:
+#         order_date = val[0]
+#         formatted_date = order_date.strftime("%Y-%m-%d")
+#         option.append(str(formatted_date))
+
+#     return option
+        
+def today():
+    now = datetime.now()
+
+    year = now.year
+    month = now.month
+    day = now.day
+    
+    return f"{year}-{month}-{day}"

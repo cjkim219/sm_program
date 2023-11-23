@@ -128,17 +128,20 @@ def add_N_listbox(Frame_class, N_List, N_entry, C_List, user_id, Columns, Values
     
     conditions = f"{con.column[1]} IS NOT NULL AND {con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[1]}", conditions)
-    
     authority = bftn.authority_check(res, select_data)
     
-    ####################
-    ### 이름 중복제거 ###
-    ####################
+    conditions = f"{con.column[2]} IS NOT NULL"
+    res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
+    name_overlap = bftn.authority_check(res, N_entry.get())
+    
     if select_data == False:
         return 0
     elif authority == False:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    elif name_overlap == True:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "이름이 중복됩니다.")
     else:
         if Values != "":
             query_str = bftn.str_combine(bftn.str_combine(acc.acc_to_tname[user_id.get()], select_data), Values)
@@ -195,15 +198,16 @@ def sub_command_3(sub_wd_class, sql_set, List, select_data, Columns, class_name)
     
     
     
-def lookup_info(Frame_class, N_List, student_info):
+def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_list):
     
     select_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
     if select_data == False:
         return 0
     else:
         conditions = f"{con.column[2]} = '{select_data}'"
+        consult_content.clear()
         bftn.show_info_cond(student_info, conditions)
-    
+        bftn.combobox_list_update(select_data, consult_date_list, con.consult_column[0], con.consult_column[1])
     
     
     
@@ -248,3 +252,85 @@ def add_basic_info(Frame_class, N_List, user_id, student_info):
     
     
     
+def add_class_info(Frame_class, N_List, user_id, student_info):
+    
+    sql_set = bftn.mysql_set(con.config)
+    select_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
+    
+    conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
+    res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
+    
+    authority = bftn.authority_check(res, select_data)
+    
+    update_data = []
+    
+    text1_var = bftn.get_text(student_info.text1)
+    
+    bftn.add_col_val_list(update_data, 13, student_info.course_var.get())
+    bftn.add_col_val_list(update_data, 14, student_info.class_day_var.get())
+    bftn.add_col_val_list(update_data, 15, student_info.day1_var.get())
+    bftn.add_col_val_list(update_data, 16, student_info.day2_var.get())
+    bftn.add_col_val_list(update_data, 17, student_info.day3_var.get())
+    bftn.add_col_val_list(update_data, 18, student_info.day1_start_var.get())
+    bftn.add_col_val_list(update_data, 19, student_info.day1_end_var.get())
+    bftn.add_col_val_list(update_data, 20, student_info.day2_start_var.get())
+    bftn.add_col_val_list(update_data, 21, student_info.day2_end_var.get())
+    bftn.add_col_val_list(update_data, 22, student_info.day3_start_var.get())
+    bftn.add_col_val_list(update_data, 23, student_info.day3_end_var.get())
+    
+    bftn.add_col_val_list(update_data, 24, student_info.main_book_var.get())
+    bftn.add_col_val_list(update_data, 25, student_info.main_start_date_var.get())
+    bftn.add_col_val_list(update_data, 26, student_info.main_end_date_var.get())
+    bftn.add_col_val_list(update_data, 27, student_info.sub_book_var.get())
+    bftn.add_col_val_list(update_data, 28, student_info.sub_start_date_var.get())
+    bftn.add_col_val_list(update_data, 29, student_info.sub_end_date_var.get())
+    bftn.add_col_val_list(update_data, 30, text1_var)
+    bftn.add_col_val_list(update_data, 31, student_info.text2_var.get())
+    
+    if select_data == False:
+        return 0
+    elif authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    else:
+        if update_data != []:
+            cond = f"{con.column[2]} = '{select_data}'"
+            sql_set.update_query_value(bftn.list_to_str(update_data), cond)
+        else:
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
+            
+            
+
+def add_consult_info(Frame_class, N_List, user_id, consult_content, consult_date_list):
+    
+    sql_set = bftn.mysql_set(con.config)
+    select_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
+    
+    conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
+    res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
+    
+    authority = bftn.authority_check(res, select_data)
+    
+    content_var = bftn.get_text(consult_content.content)
+    
+    Columns = f"{con.consult_column[0]}, {con.consult_column[1]}, {con.consult_column[2]}, {con.consult_column[3]}"
+    
+    if select_data == False:
+        return 0
+    elif authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    else:
+        if consult_content.subject_var.get() != "":
+            if consult_content.date_var.get() == "":
+                query_str = f"{select_data}', '{bftn.today()}', '{consult_content.subject_var.get()}', '{content_var}"
+                sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
+                bftn.combobox_list_update(select_data, consult_date_list, con.consult_column[0], con.consult_column[1])
+            else:
+                query_str = f"{select_data}', '{consult_content.date_var.get()}', '{consult_content.subject_var.get()}', '{content_var}"
+                sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
+                bftn.combobox_list_update(select_data, consult_date_list, con.consult_column[0], con.consult_column[1])
+        else:
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "내용을 입력해주세요.")

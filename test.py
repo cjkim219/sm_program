@@ -167,15 +167,27 @@
     
 # print(sample_str[0:len(sample_str)-2])
 
-column = ["teacher", "class_name", "st_name", "age", "gender", "school", "grade", 
-          "birth", "st_HP", "pa_HP", "email", "address", "etc", "course", "class_day",
-          "day1", "day2", "day3", "day1_start", "day1_end", "day2_start", "day2_end",
-          "day3_start", "day3_end", "main_book", "main_start_date", "main_end_date",
-          "sub_book", "sub_start_date", "sub_end_date", "text1", "text2"]
+import tkinter as tk
+from tkinter import ttk
 
+def update_combobox():
+    # 업데이트할 목록
+    new_items = ["항목1", "항목2", "항목3"]
 
-sample = ["abc", "def"]
+    # 콤보박스의 목록 업데이트
+    combo['values'] = new_items
 
-print(len(column))
+# Tkinter 윈도우 생성
+window = tk.Tk()
+window.title("콤보박스 리스트 업데이트 예제")
 
-print(len(sample))
+# 콤보박스 생성
+combo = ttk.Combobox(window, values=["기존항목1", "기존항목2", "기존항목3"])
+combo.pack(padx=10, pady=10)
+
+# 업데이트 버튼 생성
+update_button = tk.Button(window, text="리스트 업데이트", command=update_combobox)
+update_button.pack(pady=10)
+
+# 윈도우 실행
+window.mainloop()
