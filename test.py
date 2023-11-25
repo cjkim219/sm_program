@@ -169,25 +169,41 @@
 
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 
-def update_combobox():
-    # 업데이트할 목록
-    new_items = ["항목1", "항목2", "항목3"]
+def get_selected_value():
+    selected_value = combo.get()
+    result_label.config(text=f"Selected value: {selected_value}")
 
-    # 콤보박스의 목록 업데이트
-    combo['values'] = new_items
+# Tkinter 창 생성
+root = tk.Tk()
+root.title("Combo Box Example")
 
-# Tkinter 윈도우 생성
-window = tk.Tk()
-window.title("콤보박스 리스트 업데이트 예제")
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
+
+
 
 # 콤보박스 생성
-combo = ttk.Combobox(window, values=["기존항목1", "기존항목2", "기존항목3"])
-combo.pack(padx=10, pady=10)
+combo = ttk.Combobox(root, values=["Option 1", "Option 2", "Option 3", logo_directory])
+combo.pack(pady=10)
 
-# 업데이트 버튼 생성
-update_button = tk.Button(window, text="리스트 업데이트", command=update_combobox)
-update_button.pack(pady=10)
+# 버튼 생성
+button = tk.Button(root, text="Get Selected Value", command=get_selected_value)
+button.pack(pady=10)
 
-# 윈도우 실행
-window.mainloop()
+# 결과를 표시할 레이블 생성
+result_label = tk.Label(root, text="")
+result_label.pack(pady=10)
+
+image = Image.open(logo_directory)
+photo = ImageTk.PhotoImage(image)
+
+# Tkinter 윈도우 생성 및 이미지 표시
+label = tk.Label(root, image=photo)
+label.pack()
+
+
+# Tkinter 이벤트 루프 시작
+root.mainloop()

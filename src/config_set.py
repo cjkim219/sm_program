@@ -1,3 +1,5 @@
+import os
+
 main_screen_title = "하이어 수학학원"
 main_screen_size = "1080x720"
 
@@ -6,7 +8,11 @@ login_screen_size = "296x240"
 
 war_box_size = "200x80"
 
-logo_directory = r"..\picture\higher_math_logo.png"
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
+
+# logo_directory = r"..\images\higher_math_logo.png"
 
 
 config = {
