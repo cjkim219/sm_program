@@ -163,10 +163,10 @@ def class_info(tab, student_info, N_List, user_id):
     tab_class.insert_label_entry(student_info.sub_end_date_var, "종료일", 345, 225, 405, 225, E_width=10)
     tab_class.insert_label_entry(student_info.text2_var, "특이사항", 10, 250, 70, 250, E_width=58)
     
-    tab_class.gen_button("주교재 시작", empty_function, 70, 280)
-    tab_class.gen_button("부교재 시작", empty_function, 159, 280)
-    tab_class.gen_button("주교재 종료", empty_function, 250, 280)
-    tab_class.gen_button("부교재 종료", empty_function, 339, 280)
+    tab_class.gen_button("주교재 시작", lambda: bftn.set_today(student_info.main_start_date_var), 70, 280)
+    tab_class.gen_button("부교재 시작", lambda: bftn.set_today(student_info.sub_start_date_var), 159, 280)
+    tab_class.gen_button("주교재 종료", lambda: bftn.set_today(student_info.main_end_date_var), 250, 280)
+    tab_class.gen_button("부교재 종료", lambda: bftn.set_today(student_info.sub_end_date_var), 339, 280)
     tab_class.gen_button_bs("완료 항목으로 이동", empty_function, 22, 1, 70, 310)
     tab_class.gen_button_bs("완료된 교재", empty_function, 22, 1, 250, 310)
     tab_class.gen_button_bs("입력", lambda: btftn.add_class_info(tab_class, N_List, user_id, student_info), 6, 3, 428, 280)
@@ -184,10 +184,10 @@ def consult_info(tab, consult_content, N_List, user_id):
     option = []
     consult_date_list = tab_class.gen_combobox(option, 12, 15, 305)
     
-    tab_class.gen_button_fs("조회", empty_function, 256, 305)
+    tab_class.gen_button_fs("조회", lambda: btftn.lookup_consult_info(tab_class, consult_content, consult_date_list), 256, 305)
     tab_class.gen_button_fs("수정", empty_function, 316, 305)
     tab_class.gen_button_fs("삭제", empty_function, 376, 305)
-    tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, N_List, user_id, consult_content, consult_date_list), 436, 305)
+    tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, user_id, consult_content, consult_date_list), 436, 305)
     
     return consult_date_list
 

@@ -33,6 +33,7 @@ class window_set:
     def gen_button(self, bt_text, cm_ftn, b_x, b_y):
         self.button = tk.Button(self.new_window, text=bt_text, command=cm_ftn)
         self.button.place(x=b_x, y=b_y)
+        return self.button
     
     # 버튼 생성 메서드 + 버튼 크기 조절 (width, height)  
     def gen_button_bs(self, bt_text, cm_ftn, width, height, b_x, b_y):
@@ -402,16 +403,39 @@ def show_list_box_cond(Listbox, columns, conditions):
         Listbox.insert(tk.END, row)
         
         
-def show_info_cond(student_info, conditions):
+def show_info_cond(info_class, conditions):
     
     sql_set = mysql_set(con.config)
     res = sql_set.select_query("*", conditions)
     
-    student_info.clear()
+    info_class.clear()
     for i in range(3, con.db_info_length):
         if res[0][i] != None:
-            show_value(i, student_info, res[0][i])
+            show_value(i, info_class, res[0][i])
+            
+            
+            
+def show_consult_info_cond(info_class, conditions):
+    
+    sql_set = mysql_set(con.config)
+    res = sql_set.select_query("*", conditions, con.consult_table_name)
+    
+    info_class.clear()
+    for i in range(1, con.db_consult_info_length):
+        if res[0][i] != None:
+            show_consult_value(i, info_class, res[0][i])
 
+
+
+def show_consult_value(int, consult_content, value):
+    if int == 1:
+        consult_content.date_var.set(value)
+    elif int == 2:
+        consult_content.subject_var.set(value)
+    elif int == 3:
+        consult_content.content.insert(tk.END, value)
+        
+        
             
 def show_value(int, student_info, value):
     if int == 3:
@@ -623,3 +647,8 @@ def today():
     day = now.day
     
     return f"{year}-{month}-{day}"
+
+
+
+def set_today(entry):
+    entry.set(today())

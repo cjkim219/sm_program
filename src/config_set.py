@@ -1,7 +1,3 @@
-
-
-
-
 main_screen_title = "하이어 수학학원"
 main_screen_size = "1080x720"
 
@@ -48,3 +44,7 @@ class_time = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",
 
 
 db_info_length = len(column)
+db_consult_info_length = len(consult_column)
+
+
+selected_data = False
