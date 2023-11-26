@@ -208,6 +208,24 @@ class mysql_set:
         return result
     
     
+    def select_order_query(self, columns, conditions, order_column, table = con.table_name):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT {columns} FROM {table} WHERE {conditions} ORDER BY {order_column}"
+                cur.execute(sql)
+                result = cur.fetchall()    
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
     def select_query_distinct_cond(self, columns, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
@@ -226,12 +244,48 @@ class mysql_set:
         return result
     
     
+    def select_order_query_distinct_cond(self, columns, conditions, order_column, table = con.table_name):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT DISTINCT {columns} FROM {table} WHERE {conditions} ORDER BY {order_column}"
+                cur.execute(sql)
+                result = cur.fetchall()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
     def select_query_distinct(self, columns, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
                 sql = f"SELECT DISTINCT {columns} FROM {table}"
+                cur.execute(sql)
+                result = cur.fetchall()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
+    def select_order_query_distinct(self, columns, order_column, table = con.table_name):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT DISTINCT {columns} FROM {table} ORDER BY {order_column}"
                 cur.execute(sql)
                 result = cur.fetchall()
                     
@@ -393,15 +447,6 @@ def gen_label_rely(Frame, lb_text, l_x, l_rely):
     label.place(x=l_x, rely=l_rely)
     
     
-    
-def show_list_box_cond(Listbox, columns, conditions):
-    
-    sql_set = mysql_set(con.config)
-    res = sql_set.select_query_distinct_cond(columns, conditions)
-    clear(Listbox)
-    for row in res:
-        Listbox.insert(tk.END, row)
-        
         
 def show_info_cond(info_class, conditions):
     
@@ -421,18 +466,18 @@ def show_consult_info_cond(info_class, conditions):
     res = sql_set.select_query("*", conditions, con.consult_table_name)
     
     info_class.clear()
-    for i in range(1, con.db_consult_info_length):
+    for i in range(2, con.db_consult_info_length):
         if res[0][i] != None:
             show_consult_value(i, info_class, res[0][i])
 
 
 
 def show_consult_value(int, consult_content, value):
-    if int == 1:
+    if int == 2:
         consult_content.date_var.set(value)
-    elif int == 2:
-        consult_content.subject_var.set(value)
     elif int == 3:
+        consult_content.subject_var.set(value)
+    elif int == 4:
         consult_content.content.insert(tk.END, value)
         
         
@@ -499,10 +544,20 @@ def show_value(int, student_info, value):
             
         
         
-def show_list_box(Listbox, columns):
+def show_list_box(Listbox, columns, order_column):
     
     sql_set = mysql_set(con.config)
-    res = sql_set.select_query_distinct(columns)
+    res = sql_set.select_order_query_distinct(columns, order_column)
+    clear(Listbox)
+    for row in res:
+        Listbox.insert(tk.END, row)
+        
+        
+        
+def show_list_box_cond(Listbox, columns, conditions, order_column):
+    
+    sql_set = mysql_set(con.config)
+    res = sql_set.select_order_query_distinct_cond(columns, conditions, order_column)
     clear(Listbox)
     for row in res:
         Listbox.insert(tk.END, row)
@@ -541,6 +596,15 @@ def authority_check(query_result, check_data):
     authority = False
     for val in query_result:
         if val[0] == check_data:
+            authority = True
+            break
+    return authority
+
+
+def authority_check_val(query_result, check_data):
+    authority = False
+    for val in query_result:
+        if val == check_data:
             authority = True
             break
     return authority
@@ -605,19 +669,17 @@ def add_table_query(start):
         conn.close()
         
         
-def combobox_list_update(cond, combobox, cond_column_1, cond_column_2):
+def combobox_list_update(cond, combobox, cond_column_1, cond_column_2, order_column):
     
     sql_set = mysql_set(con.config)
     
     update_list = []
     conditions = f"{cond_column_1} = '{cond}'"
     
-    res = sql_set.select_query(f"{cond_column_2}", conditions, con.consult_table_name)
+    res = sql_set.select_order_query(f"{cond_column_2}", conditions, f"{order_column}", con.consult_table_name)
 
     for val in res:
-        order_date = val[0]
-        formatted_date = order_date.strftime("%Y-%m-%d")
-        update_list.append(str(formatted_date))
+        update_list.append(val[0].strftime("%Y-%m-%d"))
 
     combobox['values'] = update_list
     

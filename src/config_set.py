@@ -39,9 +39,9 @@ column_type = ["VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "CHAR(5)", "CHAR(5)"
 
 consult_table_name = "consult"
 
-consult_column = ["st_name", "date", "subject", "content"]
+consult_column = ["teacher", "st_name", "date", "subject", "content"]
 
-consult_column_type = ["VARCHAR(50)", "DATE", "VARCHAR(50)", "TEXT"]
+consult_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "TEXT"]
 
 
 
@@ -52,5 +52,6 @@ class_time = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",
 db_info_length = len(column)
 db_consult_info_length = len(consult_column)
 
-
-selected_data = False
+### global variable ###
+selected_class_name = False
+selected_st_name = False

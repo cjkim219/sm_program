@@ -1,5 +1,5 @@
 import pymysql
-
+from datetime import datetime   
 
 import config_set as con
 import base_function as bftn
@@ -14,7 +14,7 @@ def add_T_listbox(Frame_class, T_List, T_entry, Columns, Values):
         sql_set = bftn.mysql_set(con.config)
         sql_set.insert_query_str(Columns, Values)
         bftn.clear(T_entry)
-        bftn.show_list_box(T_List, f"{con.column[0]}")
+        bftn.show_list_box(T_List, f"{con.column[0]}", f"{con.column[0]}")
     else:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
@@ -41,7 +41,7 @@ def sub_command_1(sub_wd_class, sql_set, List, select_data, list_name):
     sub_wd_class.clear_wd()
     conditions_c = f"{list_name} = '{select_data}'"
     sql_set.delete_query_cond(conditions_c)
-    bftn.show_list_box(List, list_name)
+    bftn.show_list_box(List, list_name, list_name)
     
     
     
@@ -68,7 +68,7 @@ def add_C_listbox(Frame_class, C_List, C_entry, user_id, Columns, Values):
             sql_set.insert_query_str(Columns, query_str)
             conditions = f"{con.column[1]} IS NOT NULL AND {con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
             bftn.clear(C_entry)
-            bftn.show_list_box_cond(C_List, f"{con.column[1]}", conditions)
+            bftn.show_list_box_cond(C_List, f"{con.column[1]}", conditions, con.column[1])
     else:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
@@ -83,7 +83,7 @@ def lookup_C_listbox(Frame_class, C_List, T_List, N_List):
     else:
         conditions = f"{con.column[1]} IS NOT NULL AND {con.column[0]} = '{selected_data}'"
         bftn.clear(N_List)
-        bftn.show_list_box_cond(C_List, f"{con.column[1]}", conditions)
+        bftn.show_list_box_cond(C_List, f"{con.column[1]}", conditions, f"{con.column[1]}")
         
 
 def delete_C_listbox(Frame_class, C_List, user_id):
@@ -116,7 +116,7 @@ def sub_command_2(sub_wd_class, sql_set, List, select_data, Columns, user_id):
     conditions_c = f"{Columns} = '{select_data}'"
     conditions_t = f"{Columns} IS NOT NULL AND {con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     sql_set.delete_query_cond(conditions_c)
-    bftn.show_list_box_cond(List, Columns, conditions_t)
+    bftn.show_list_box_cond(List, Columns, conditions_t, Columns)
     
     
     
@@ -148,7 +148,7 @@ def add_N_listbox(Frame_class, N_List, N_entry, C_List, user_id, Columns, Values
             sql_set.insert_query_str(Columns, query_str)
             conditions = f"{con.column[2]} IS NOT NULL AND {con.column[1]} = '{selected_data}'"
             bftn.clear(N_entry)
-            bftn.show_list_box_cond(N_List, f"{con.column[2]}", conditions)
+            bftn.show_list_box_cond(N_List, f"{con.column[2]}", conditions, f"{con.column[2]}")
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
@@ -156,12 +156,12 @@ def add_N_listbox(Frame_class, N_List, N_entry, C_List, user_id, Columns, Values
             
 def lookup_N_listbox(Frame_class, C_List, N_List):
     
-    selected_data = bftn.get_selectitem(Frame_class, C_List, "반을 선택해주세요.")
-    if selected_data == False:
+    con.selected_class_name = bftn.get_selectitem(Frame_class, C_List, "반을 선택해주세요.")
+    if con.selected_class_name == False:
         return 0
     else:
-        conditions = f"{con.column[2]} IS NOT NULL AND {con.column[1]} = '{selected_data}'"
-        bftn.show_list_box_cond(N_List, f"{con.column[2]}", conditions)
+        conditions = f"{con.column[2]} IS NOT NULL AND {con.column[1]} = '{con.selected_class_name}'"
+        bftn.show_list_box_cond(N_List, f"{con.column[2]}", conditions, f"{con.column[2]}")
         
         
 def delete_N_listbox(Frame_class, N_List, user_id):
@@ -194,24 +194,25 @@ def sub_command_3(sub_wd_class, sql_set, List, select_data, Columns, class_name)
     conditions_n = f"{Columns} = '{select_data}'"
     conditions_c = f"{Columns} IS NOT NULL AND {con.column[1]} = '{class_name}'"
     sql_set.delete_query_cond(conditions_n)
-    bftn.show_list_box_cond(List, Columns, conditions_c)
+    bftn.show_list_box_cond(List, Columns, conditions_c, Columns)
     
     
     
 def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_list):
     
-    con.selected_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
-    if con.selected_data == False:
+    con.selected_st_name = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
+    if con.selected_st_name == False:
         return 0
     else:
-        conditions = f"{con.column[2]} = '{con.selected_data}'"
+        conditions = f"{con.column[2]} = '{con.selected_st_name}'"
         consult_content.clear()
         bftn.show_info_cond(student_info, conditions)
-        bftn.combobox_list_update(con.selected_data, consult_date_list, con.consult_column[0], con.consult_column[1])
+        bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+                                  con.consult_column[1], con.consult_column[2], con.consult_column[2])
+        consult_date_list.set("")
     
     
-    
-def add_basic_info(Frame_class, N_List, user_id, student_info):
+def add_basic_info(Frame_class, user_id, student_info):
     
     sql_set = bftn.mysql_set(con.config)
     # con.selected_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
@@ -219,7 +220,7 @@ def add_basic_info(Frame_class, N_List, user_id, student_info):
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
     
-    authority = bftn.authority_check(res, con.selected_data)
+    authority = bftn.authority_check(res, con.selected_st_name)
     
     update_data = []
     
@@ -237,14 +238,14 @@ def add_basic_info(Frame_class, N_List, user_id, student_info):
     bftn.add_col_val_list(update_data, 11, address_var)
     bftn.add_col_val_list(update_data, 12, etc_var)
     
-    if con.selected_data == False:
+    if con.selected_st_name == False:
         return 0
     elif authority == False:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "권한이 없습니다.")
     else:
         if update_data != []:
-            cond = f"{con.column[2]} = '{con.selected_data}'"
+            cond = f"{con.column[2]} = '{con.selected_st_name}'"
             sql_set.update_query_value(bftn.list_to_str(update_data), cond)
         else:
             sub_wd = Frame_class.sub_wd()
@@ -252,7 +253,7 @@ def add_basic_info(Frame_class, N_List, user_id, student_info):
     
     
     
-def add_class_info(Frame_class, N_List, user_id, student_info):
+def add_class_info(Frame_class, user_id, student_info):
     
     sql_set = bftn.mysql_set(con.config)
     # con.selected_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
@@ -260,7 +261,7 @@ def add_class_info(Frame_class, N_List, user_id, student_info):
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
     
-    authority = bftn.authority_check(res, con.selected_data)
+    authority = bftn.authority_check(res, con.selected_st_name)
     
     update_data = []
     
@@ -287,50 +288,66 @@ def add_class_info(Frame_class, N_List, user_id, student_info):
     bftn.add_col_val_list(update_data, 30, text1_var)
     bftn.add_col_val_list(update_data, 31, student_info.text2_var.get())
     
-    if con.selected_data == False:
+    if con.selected_st_name == False:
         return 0
     elif authority == False:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "권한이 없습니다.")
     else:
         if update_data != []:
-            cond = f"{con.column[2]} = '{con.selected_data}'"
+            cond = f"{con.column[2]} = '{con.selected_st_name}'"
             sql_set.update_query_value(bftn.list_to_str(update_data), cond)
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
             
-            
+      
 
 def add_consult_info(Frame_class, user_id, consult_content, consult_date_list):
     
     sql_set = bftn.mysql_set(con.config)
-    # con.selected_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
-    
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
     
-    authority = bftn.authority_check(res, con.selected_data)
+    authority = bftn.authority_check(res, con.selected_st_name)
     
+    conditions = f"{con.consult_column[1]} = '{con.selected_st_name}'"    
+    res = sql_set.select_query_distinct_cond(f"{con.consult_column[2]}", conditions, con.consult_table_name)
+    
+    res_date = []
+    for val in res:
+        res_date.append(val[0].strftime("%Y-%m-%d"))
+        
+    if consult_content.date_var.get() == "":
+        consult_date = bftn.today()
+    else:
+        consult_date = consult_content.date_var.get()
+        
+    date_overlap = bftn.authority_check_val(res_date, consult_date)
+
     content_var = bftn.get_text(consult_content.content)
+    Columns = f"{con.consult_column[0]}, {con.consult_column[1]}, {con.consult_column[2]}, {con.consult_column[3]}, {con.consult_column[4]}"
     
-    Columns = f"{con.consult_column[0]}, {con.consult_column[1]}, {con.consult_column[2]}, {con.consult_column[3]}"
-    
-    if con.selected_data == False:
+    if con.selected_st_name == False:
         return 0
     elif authority == False:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    elif date_overlap == True:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "상담기록이 존재합니다.")
     else:
         if consult_content.subject_var.get() != "":
             if consult_content.date_var.get() == "":
-                query_str = f"{con.selected_data}', '{bftn.today()}', '{consult_content.subject_var.get()}', '{content_var}"
+                query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{bftn.today()}', '{consult_content.subject_var.get()}', '{content_var}"
                 sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
-                bftn.combobox_list_update(con.selected_data, consult_date_list, con.consult_column[0], con.consult_column[1])
+                bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+                                          con.consult_column[1], con.consult_column[2], con.consult_column[2])
             else:
-                query_str = f"{con.selected_data}', '{consult_content.date_var.get()}', '{consult_content.subject_var.get()}', '{content_var}"
+                query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{consult_content.date_var.get()}', '{consult_content.subject_var.get()}', '{content_var}"
                 sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
-                bftn.combobox_list_update(con.selected_data, consult_date_list, con.consult_column[0], con.consult_column[1])
+                bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+                                          con.consult_column[1], con.consult_column[2], con.consult_column[2])
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
@@ -344,9 +361,42 @@ def lookup_consult_info(Frame_class, consult_content, consult_date_list):
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "날짜를 선택해주세요.")
     else:
-        conditions = f"{con.consult_column[1]} = '{selected_date}'"
+        conditions = f"{con.consult_column[1]} = '{con.selected_st_name}' AND {con.consult_column[2]} = '{selected_date}'"
         consult_content.clear()
         bftn.show_consult_info_cond(consult_content, conditions)
     
     
     
+def delete_consult_info(Frame_class, consult_content, consult_date_list, user_id):
+    
+    sql_set = bftn.mysql_set(con.config)
+    selected_date = consult_date_list.get()
+
+    conditions = f"{con.consult_column[1]} = '{con.selected_st_name}'"
+    res = sql_set.select_query(f"{con.consult_column[0]}", conditions, con.consult_table_name)
+
+    authority = bftn.authority_check(res, acc.acc_to_tname[user_id.get()])
+        
+    if selected_date == False:
+        return 0
+    elif authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    else:
+        sub_wd = Frame_class.sub_wd()
+        sub_wd_class = bftn.window_set(sub_wd)
+        sub_wd_class.set_title("주의")
+        sub_wd_class.set_size(con.war_box_size)
+        sub_wd_class.gen_label("삭제하시겠습니까?", 45, 10)
+        sub_wd_class.gen_button("확인", lambda: sub_command_4(sub_wd_class, consult_content, 
+                                                            consult_date_list, sql_set, selected_date), 45, 40)
+        sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
+        
+    
+def sub_command_4(sub_wd_class, consult_content, consult_date_list, sql_set, selected_date):
+    sub_wd_class.clear_wd()
+    conditions = f"{con.consult_column[1]} = '{con.selected_st_name}' AND {con.consult_column[2]} = '{selected_date}'"
+    sql_set.delete_query_cond(conditions, con.consult_table_name)
+    consult_content.clear()
+    bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+                              con.consult_column[1], con.consult_column[2], con.consult_column[2] )

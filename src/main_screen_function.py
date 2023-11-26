@@ -17,7 +17,7 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     
     tab1 = tk.Frame(notebook)
     notebook.add(tab1, text="기본정보")
-    basic_info(tab1, student_info, N_List, user_id)
+    basic_info(tab1, student_info, user_id)
     
     tab2 = tk.Frame(notebook)
     notebook.add(tab2, text="수업정보")
@@ -25,7 +25,7 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     
     tab3 = tk.Frame(notebook)
     notebook.add(tab3, text="상담내용")
-    consult_date_list = consult_info(tab3, consult_content, N_List, user_id)
+    consult_date_list = consult_info(tab3, consult_content, user_id)
     
     tab4 = tk.Frame(notebook)   
     notebook.add(tab4, text="시험결과")
@@ -50,7 +50,7 @@ def Teacher_list_button(Frame_class, T_List, C_List, N_List, user_id):
         
         
     
-def Class_list_button(Frame_class, T_List, C_List, N_List, user_id):
+def Class_list_button(Frame_class, C_List, N_List, user_id):
     
     var = tk.StringVar()
     C_entry = Frame_class.gen_entry(var, 200, 280, 15)
@@ -76,7 +76,7 @@ def Name_list_button(Frame_class, C_List, N_List, user_id):
     
     
     
-def basic_info(tab, student_info, N_List, user_id):
+def basic_info(tab, student_info, user_id):
     
     tab_class = bftn.window_set(tab)
     
@@ -100,7 +100,7 @@ def basic_info(tab, student_info, N_List, user_id):
     student_info.address = tab_class.insert_label_text("주소", 240, 85, 285, 85, 7, 27, 3)
     student_info.etc = tab_class.insert_label_text("특이사항", 10, 145, 15, 170, 7, 66, 10)
     
-    tab_class.gen_button_fs("입력", lambda: btftn.add_basic_info(tab_class, N_List, user_id, student_info), 440, 315)
+    tab_class.gen_button_fs("입력", lambda: btftn.add_basic_info(tab_class, user_id, student_info), 440, 315)
 
     
     
@@ -169,11 +169,11 @@ def class_info(tab, student_info, N_List, user_id):
     tab_class.gen_button("부교재 종료", lambda: bftn.set_today(student_info.sub_end_date_var), 339, 280)
     tab_class.gen_button_bs("완료 항목으로 이동", empty_function, 22, 1, 70, 310)
     tab_class.gen_button_bs("완료된 교재", empty_function, 22, 1, 250, 310)
-    tab_class.gen_button_bs("입력", lambda: btftn.add_class_info(tab_class, N_List, user_id, student_info), 6, 3, 428, 280)
+    tab_class.gen_button_bs("입력", lambda: btftn.add_class_info(tab_class, user_id, student_info), 6, 3, 428, 280)
     
     
     
-def consult_info(tab, consult_content, N_List, user_id):
+def consult_info(tab, consult_content, user_id):
     
     tab_class = bftn.window_set(tab)
     
@@ -186,7 +186,7 @@ def consult_info(tab, consult_content, N_List, user_id):
     
     tab_class.gen_button_fs("조회", lambda: btftn.lookup_consult_info(tab_class, consult_content, consult_date_list), 256, 305)
     tab_class.gen_button_fs("수정", empty_function, 316, 305)
-    tab_class.gen_button_fs("삭제", empty_function, 376, 305)
+    tab_class.gen_button_fs("삭제", lambda: btftn.delete_consult_info(tab_class, consult_content, consult_date_list, user_id), 376, 305)
     tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, user_id, consult_content, consult_date_list), 436, 305)
     
     return consult_date_list

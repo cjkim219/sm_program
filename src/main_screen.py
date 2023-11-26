@@ -46,10 +46,10 @@ def mid_frame(main_screen, user_id):
     N_List = Frame_class.gen_listbox_fs(350, 0.1)
     Frame_class.gen_label_rely_fs("내용", 530, 0.05)
     
-    bftn.show_list_box(T_List, con.column[0])
+    bftn.show_list_box(T_List, con.column[0], con.column[0])
     
     msf.Teacher_list_button(Frame_class, T_List, C_List, N_List, user_id)   
-    msf.Class_list_button(Frame_class, T_List, C_List, N_List, user_id)
+    msf.Class_list_button(Frame_class, C_List, N_List, user_id)
     msf.Name_list_button(Frame_class, C_List, N_List, user_id)
     msf.gen_notebook(Frame_class, N_List, user_id, 500, 350)
     
