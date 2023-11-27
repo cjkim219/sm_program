@@ -45,12 +45,22 @@ consult_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "TEX
 
 
 
+exam_table_name = "exam_result"
+
+exam_column = ["teacher", "st_name", "date", "exam_type", "exam_range", "score"]
+
+exam_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "VARCHAR(50)", "TINYINT"]
+
+
+
+
 class_time = ["17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",
               "20:30", "21:00", "21:30", "22:00"]
 
 
 db_info_length = len(column)
 db_consult_info_length = len(consult_column)
+db_exam_info_length = len(exam_column)
 
 ### global variable ###
 selected_class_name = False

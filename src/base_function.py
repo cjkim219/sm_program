@@ -414,6 +414,21 @@ class consult_content:
         
         
         
+class exam_content:
+    def __init__(self):
+        self.date_var = tk.StringVar()
+        self.exam_type_var = tk.StringVar()
+        self.exam_range_var = tk.StringVar()
+        self.score_var = tk.StringVar()
+        
+    def clear(self):
+        self.date_var.set("")
+        self.exam_type_var.set("")
+        self.exam_range_var.set("")
+        self.score_var.set("")
+        
+        
+        
             
 def clear(target):
     target.delete(0, tk.END)
@@ -554,14 +569,29 @@ def show_list_box(Listbox, columns, order_column):
         
         
         
-def show_list_box_cond(Listbox, columns, conditions, order_column):
+def show_list_box_cond(Listbox, columns, conditions, order_column, table = con.table_name):
     
     sql_set = mysql_set(con.config)
-    res = sql_set.select_order_query_distinct_cond(columns, conditions, order_column)
+    res = sql_set.select_order_query_distinct_cond(columns, conditions, order_column, table)
     clear(Listbox)
     for row in res:
         Listbox.insert(tk.END, row)
         
+        # select_order_query(self, columns, conditions, order_column, table = con.table_name):
+
+def show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions, order_column):
+    
+    sql_set = mysql_set(con.config)
+    res = sql_set.select_order_query("*", conditions, order_column, con.exam_table_name)
+    clear(Date_List)
+    clear(Type_List)
+    clear(Range_List)
+    clear(Score_List)
+    for row in res:
+        Date_List.insert(tk.END, row[2])
+        Type_List.insert(tk.END, row[3])
+        Range_List.insert(tk.END, row[4])
+        Score_List.insert(tk.END, row[5])
 
 
 def get_selectitem(Frame_class, T_list, errorText):

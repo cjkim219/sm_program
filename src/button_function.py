@@ -198,7 +198,7 @@ def sub_command_3(sub_wd_class, sql_set, List, select_data, Columns, class_name)
     
     
     
-def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_list):
+def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_cbox):
     
     con.selected_st_name = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
     if con.selected_st_name == False:
@@ -207,9 +207,9 @@ def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date
         conditions = f"{con.column[2]} = '{con.selected_st_name}'"
         consult_content.clear()
         bftn.show_info_cond(student_info, conditions)
-        bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+        bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
                                   con.consult_column[1], con.consult_column[2], con.consult_column[2])
-        consult_date_list.set("")
+        consult_date_cbox.set("")
     
     
 def add_basic_info(Frame_class, user_id, student_info):
@@ -303,7 +303,7 @@ def add_class_info(Frame_class, user_id, student_info):
             
       
 
-def add_consult_info(Frame_class, user_id, consult_content, consult_date_list):
+def add_consult_info(Frame_class, user_id, consult_content, consult_date_cbox):
     
     sql_set = bftn.mysql_set(con.config)
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
@@ -341,12 +341,12 @@ def add_consult_info(Frame_class, user_id, consult_content, consult_date_list):
             if consult_content.date_var.get() == "":
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{bftn.today()}', '{consult_content.subject_var.get()}', '{content_var}"
                 sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
-                bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+                bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
                                           con.consult_column[1], con.consult_column[2], con.consult_column[2])
             else:
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{consult_content.date_var.get()}', '{consult_content.subject_var.get()}', '{content_var}"
                 sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
-                bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+                bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
                                           con.consult_column[1], con.consult_column[2], con.consult_column[2])
         else:
             sub_wd = Frame_class.sub_wd()
@@ -354,9 +354,9 @@ def add_consult_info(Frame_class, user_id, consult_content, consult_date_list):
             
             
             
-def lookup_consult_info(Frame_class, consult_content, consult_date_list):
+def lookup_consult_info(Frame_class, consult_content, consult_date_cbox):
         
-    selected_date = consult_date_list.get()
+    selected_date = consult_date_cbox.get()
     if selected_date == "":
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "날짜를 선택해주세요.")
@@ -367,10 +367,10 @@ def lookup_consult_info(Frame_class, consult_content, consult_date_list):
     
     
     
-def delete_consult_info(Frame_class, consult_content, consult_date_list, user_id):
+def delete_consult_info(Frame_class, consult_content, consult_date_cbox, user_id):
     
     sql_set = bftn.mysql_set(con.config)
-    selected_date = consult_date_list.get()
+    selected_date = consult_date_cbox.get()
 
     conditions = f"{con.consult_column[1]} = '{con.selected_st_name}'"
     res = sql_set.select_query(f"{con.consult_column[0]}", conditions, con.consult_table_name)
@@ -389,14 +389,74 @@ def delete_consult_info(Frame_class, consult_content, consult_date_list, user_id
         sub_wd_class.set_size(con.war_box_size)
         sub_wd_class.gen_label("삭제하시겠습니까?", 45, 10)
         sub_wd_class.gen_button("확인", lambda: sub_command_4(sub_wd_class, consult_content, 
-                                                            consult_date_list, sql_set, selected_date), 45, 40)
+                                                            consult_date_cbox, sql_set, selected_date), 45, 40)
         sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
         
     
-def sub_command_4(sub_wd_class, consult_content, consult_date_list, sql_set, selected_date):
+def sub_command_4(sub_wd_class, consult_content, consult_date_cbox, sql_set, selected_date):
     sub_wd_class.clear_wd()
     conditions = f"{con.consult_column[1]} = '{con.selected_st_name}' AND {con.consult_column[2]} = '{selected_date}'"
     sql_set.delete_query_cond(conditions, con.consult_table_name)
     consult_content.clear()
-    bftn.combobox_list_update(con.selected_st_name, consult_date_list, 
+    bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
                               con.consult_column[1], con.consult_column[2], con.consult_column[2] )
+
+
+# exam_column = ["teacher", "st_name", "date", "exam_type", "exam_range", "score"]
+def add_exam_info(Frame_class, exam_content, user_id, Date_List, Type_List, Range_List, Score_List):
+    
+    sql_set = bftn.mysql_set(con.config)
+    conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
+    res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
+
+    authority = bftn.authority_check(res, con.selected_st_name)
+    
+    conditions = f"{con.exam_column[1]} = '{con.selected_st_name}'"    
+    res = sql_set.select_query_distinct_cond(f"{con.exam_column[3]}", conditions, con.exam_table_name)
+        
+    exam_overlap = bftn.authority_check_val(res, exam_content.exam_type_var.get())
+    ### exam_overlap 은 exam_type -> number 로 바꾸기...
+
+    Columns = f"{con.exam_column[0]}, {con.exam_column[1]}, {con.exam_column[2]}, {con.exam_column[3]}, {con.exam_column[4]}, {con.exam_column[5]}"
+    
+    if con.selected_st_name == False:
+        return 0
+    elif authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    elif exam_overlap == True:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "시험기록이 존재합니다.")
+    else:
+        if exam_content.exam_type_var.get() != "":
+            if exam_content.date_var.get() == "":
+                query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{bftn.today()}', '{exam_content.exam_type_var.get()}', '{exam_content.exam_range_var.get()}', '{exam_content.score_var.get()}"
+                sql_set.insert_query_str(Columns, query_str, con.exam_table_name)
+                exam_content.clear()
+                conditions_exam = f"{con.exam_column[1]} = '{con.selected_st_name}'"
+                bftn.show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions_exam, f"{con.exam_column[2]}")
+            else:
+                query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{exam_content.date_var.get()}', '{exam_content.exam_type_var.get()}', '{exam_content.exam_range_var.get()}', '{exam_content.score_var.get()}"
+                sql_set.insert_query_str(Columns, query_str, con.exam_table_name)
+                exam_content.clear()
+                conditions_exam = f"{con.exam_column[1]} = '{con.selected_st_name}'"
+                bftn.show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions_exam, f"{con.exam_column[2]}")
+        else:
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
+            
+            
+            
+def lookup_exam_info(Frame_class, exam_type_cbox, Date_List, Type_List, Range_List, Score_List):
+            
+    selected_date = exam_type_cbox.get()
+    if selected_date == "":
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "시험종류를 선택해주세요.")
+    else:
+        if exam_type_cbox.get() == "전체":
+            conditions = f"{con.exam_column[1]} = '{con.selected_st_name}'"
+        else:
+            conditions = f"{con.exam_column[1]} = '{con.selected_st_name}' AND {con.exam_column[3]} = '{selected_date}'"
+            
+        bftn.show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions, f"{con.exam_column[2]}")

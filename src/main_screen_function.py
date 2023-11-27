@@ -14,6 +14,7 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     
     student_info = bftn.student_info()
     consult_content = bftn.consult_content()
+    exam_content = bftn.exam_content()
     
     tab1 = tk.Frame(notebook)
     notebook.add(tab1, text="기본정보")
@@ -29,7 +30,7 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     
     tab4 = tk.Frame(notebook)   
     notebook.add(tab4, text="시험결과")
-    info_exam(tab4)
+    info_exam(tab4, exam_content, user_id)
     
     Frame_class.gen_button_fs("조회", lambda: btftn.lookup_info(Frame_class, N_List, student_info,
                                                               consult_content, consult_date_list), 415, 320)
@@ -182,56 +183,47 @@ def consult_info(tab, consult_content, user_id):
     consult_content.content = tab_class.insert_label_text("상담내용", 10, 40, 15, 65, 7, 66, 17)
     
     option = []
-    consult_date_list = tab_class.gen_combobox(option, 12, 15, 305)
+    consult_date_cbox = tab_class.gen_combobox(option, 12, 15, 305)
     
-    tab_class.gen_button_fs("조회", lambda: btftn.lookup_consult_info(tab_class, consult_content, consult_date_list), 256, 305)
+    tab_class.gen_button_fs("조회", lambda: btftn.lookup_consult_info(tab_class, consult_content, consult_date_cbox), 256, 305)
     tab_class.gen_button_fs("수정", empty_function, 316, 305)
-    tab_class.gen_button_fs("삭제", lambda: btftn.delete_consult_info(tab_class, consult_content, consult_date_list, user_id), 376, 305)
-    tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, user_id, consult_content, consult_date_list), 436, 305)
+    tab_class.gen_button_fs("삭제", lambda: btftn.delete_consult_info(tab_class, consult_content, consult_date_cbox, user_id), 376, 305)
+    tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, user_id, consult_content, consult_date_cbox), 436, 305)
     
-    return consult_date_list
+    return consult_date_cbox
 
-    
-def info_exam(tab):
+
+        
+def info_exam(tab, exam_content, user_id):
     
     tab_class = bftn.window_set(tab)
-    
-    data_var = tk.StringVar()
-    type_var = tk.StringVar()
-    range_var = tk.StringVar()
-    score_var = tk.StringVar()
-    
-    option = ["전체", "중간고사"]
-    
+        
     tab_class.gen_label("● 시험기록", 10, 10)
-    tab_class.gen_label("날짜", 30, 35)
-    Date_List = tab_class.gen_listbox_bs(15, 0.20, 8, 10)
-    tab_class.gen_label("시험종류", 115, 20)
-    tab_class.gen_combobox(option, 12, 90, 45)
-    Type_List = tab_class.gen_listbox_bs(90, 0.20, 15, 10)
-    tab_class.gen_label("시험범위", 285, 35)
-    Range_List = tab_class.gen_listbox_bs(215, 0.20, 28, 10)
-    tab_class.gen_label("점수", 443, 35)
+    tab_class.gen_label("날짜", 45, 40)
+    Date_List = tab_class.gen_listbox_bs(15, 0.20, 12, 10)
+    tab_class.gen_label("시험종류", 140, 20)
+    
+    ### 콤보박스의 리스트를 전체 + db에서 읽어오기
+    exam_type_cbox = tab_class.gen_combobox(["전체", "단원테스트"], 12, 110, 45)
+    Type_List = tab_class.gen_listbox_bs(110, 0.20, 15, 10)
+    tab_class.gen_label("시험범위", 295, 40)
+    Range_List = tab_class.gen_listbox_bs(225, 0.20, 28, 10)
+    tab_class.gen_label("점수", 443, 40)
     Score_List = tab_class.gen_listbox_bs(432, 0.20, 7, 10)
     
-    tab_class.gen_entry(data_var, 15, 240, 8)
-    tab_class.gen_entry(type_var, 90, 240, 15)
-    tab_class.gen_entry(range_var, 215, 240, 28)
-    tab_class.gen_entry(score_var, 432, 240, 7)
+    tab_class.gen_entry(exam_content.date_var, 15, 240, 12)
+    tab_class.gen_entry(exam_content.exam_type_var, 110, 240, 15)
+    tab_class.gen_entry(exam_content.exam_range_var, 225, 240, 28)
+    tab_class.gen_entry(exam_content.score_var, 432, 240, 7)
     
     tab_class.gen_button_bs("반 별 일괄입력", empty_function, 15, 2, 15, 290)
+    tab_class.gen_button_fs("조회", lambda: btftn.lookup_exam_info(tab_class, exam_type_cbox, 
+                                                                Date_List, Type_List, Range_List, Score_List), 256, 305)
     tab_class.gen_button_fs("수정", empty_function, 316, 305)
     tab_class.gen_button_fs("삭제", empty_function, 376, 305)
-    tab_class.gen_button_fs("입력", empty_function, 436, 305)
-
-    
-    
-    
-    Date_List.insert(tk.END, "23-11-14")
-    Type_List.insert(tk.END, "2-1 단원테스트")
-    Range_List.insert(tk.END, "순환소수 ~ 여러 가지 방정식")
-    Score_List.insert(tk.END, "100")
-    
+    tab_class.gen_button_fs("입력", lambda: btftn.add_exam_info(tab_class, exam_content, user_id,
+                                                              Date_List, Type_List, Range_List, Score_List), 436, 305)
+  
     
     
     
