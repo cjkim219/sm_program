@@ -16,3 +16,7 @@ acc_to_tname = {"ssori": '원장',
 
 T_list_button_authority = {'원장', '부원장'}
 root_mode_authority = {'원장', '부원장'}
+
+
+
+db_connect_account_info = {"mac_sam": 't123!'}

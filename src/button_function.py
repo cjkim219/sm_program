@@ -198,6 +198,69 @@ def sub_command_3(sub_wd_class, sql_set, List, select_data, Columns, class_name)
     
     
     
+def transfer_N_listbox(Frame_class, user_id, N_List):
+    
+    selected_st_name = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
+
+    sql_set = bftn.mysql_set(con.config)
+    
+    conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
+    res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
+    
+    authority = bftn.authority_check(res, selected_st_name)
+    
+    if selected_st_name == False:
+        return 0
+    elif authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    else:
+        conditions = f"{con.column[1]} IS NOT NULL"
+        T_list_res = sql_set.select_order_query_distinct(f"{con.column[0]}", f"{con.column[0]}")
+        T_list_option = []
+        for row in T_list_res:
+            T_list_option.append(row)
+        
+        C_list_res = sql_set.select_order_query_distinct_cond(f"{con.column[1]}", conditions, con.column[1])
+        C_list_option = []
+        for row in C_list_res:
+            C_list_option.append(row)
+        
+        sub_wd = Frame_class.sub_wd()
+        sub_wd_class = bftn.window_set(sub_wd)
+        sub_wd_class.set_title("반 이동")
+        sub_wd_class.set_size("285x120")
+        
+        sub_wd_class.gen_label("새로운 선생님과 반을 선택해주세요.", 27, 10)
+        T_list_cbox = sub_wd_class.gen_combobox(T_list_option, 10, 30, 40)
+        C_list_cbox = sub_wd_class.gen_combobox(C_list_option, 10, 160, 40)
+        sub_wd_class.gen_button("확인", lambda: student_transfer(sub_wd_class, selected_st_name, T_list_cbox, C_list_cbox), 87, 75)
+        sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 160, 75)
+    
+    
+    
+def student_transfer(sub_wd_class, st_name, T_list_cbox, C_list_cbox):
+    
+    selected_T = T_list_cbox.get()
+    selected_C = C_list_cbox.get()
+    
+    sql_set = bftn.mysql_set(con.config)
+    
+    conditions = f"{con.column[0]} = '{selected_T}'"
+    C_list_res = sql_set.select_query_distinct_cond(f"{con.column[1]}", conditions)
+    
+    authority = bftn.authority_check(C_list_res, selected_C)
+    
+    if authority == False:
+        sub_wd = sub_wd_class.sub_wd()
+        bftn.Error_Box(sub_wd, "선택한 선생님에게 존재하지 않는 반입니다.")
+    else:
+        cond = f"{con.column[2]} = '{st_name}'"
+        update_data = f"{con.column[0]} = '{selected_T}', {con.column[1]} = '{selected_C}'"
+        sql_set.update_query_value(update_data, cond)
+        sub_wd_class.clear_wd()
+        
+    
 def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_cbox):
     
     con.selected_st_name = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")

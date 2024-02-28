@@ -167,43 +167,73 @@
     
 # print(sample_str[0:len(sample_str)-2])
 
-import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
+# import tkinter as tk
+# from tkinter import ttk
+# from PIL import Image, ImageTk
 
-def get_selected_value():
-    selected_value = combo.get()
-    result_label.config(text=f"Selected value: {selected_value}")
+# def get_selected_value():
+#     selected_value = combo.get()
+#     result_label.config(text=f"Selected value: {selected_value}")
 
-# Tkinter 창 생성
-root = tk.Tk()
-root.title("Combo Box Example")
+# # Tkinter 창 생성
+# root = tk.Tk()
+# root.title("Combo Box Example")
 
-import os
-script_dir = os.path.dirname(os.path.abspath(__file__))
-logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
-
-
-
-# 콤보박스 생성
-combo = ttk.Combobox(root, values=["Option 1", "Option 2", "Option 3", logo_directory])
-combo.pack(pady=10)
-
-# 버튼 생성
-button = tk.Button(root, text="Get Selected Value", command=get_selected_value)
-button.pack(pady=10)
-
-# 결과를 표시할 레이블 생성
-result_label = tk.Label(root, text="")
-result_label.pack(pady=10)
-
-image = Image.open(logo_directory)
-photo = ImageTk.PhotoImage(image)
-
-# Tkinter 윈도우 생성 및 이미지 표시
-label = tk.Label(root, image=photo)
-label.pack()
+# import os
+# script_dir = os.path.dirname(os.path.abspath(__file__))
+# logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
 
 
-# Tkinter 이벤트 루프 시작
-root.mainloop()
+
+# # 콤보박스 생성
+# combo = ttk.Combobox(root, values=["Option 1", "Option 2", "Option 3", logo_directory])
+# combo.pack(pady=10)
+
+# # 버튼 생성
+# button = tk.Button(root, text="Get Selected Value", command=get_selected_value)
+# button.pack(pady=10)
+
+# # 결과를 표시할 레이블 생성
+# result_label = tk.Label(root, text="")
+# result_label.pack(pady=10)
+
+# image = Image.open(logo_directory)
+# photo = ImageTk.PhotoImage(image)
+
+# # Tkinter 윈도우 생성 및 이미지 표시
+# label = tk.Label(root, image=photo)
+# label.pack()
+
+
+# # Tkinter 이벤트 루프 시작
+# root.mainloop()
+
+
+import pymysql
+
+# MySQL 서버 연결 설정
+conn = pymysql.connect(
+    host='172.30.1.69',
+    port=3306,
+    user='sam',
+    password='sam123',
+    database='info',
+    charset='utf8mb4',
+    cursorclass=pymysql.cursors.DictCursor
+)
+
+# 커서 생성
+cursor = conn.cursor()
+
+# SQL 쿼리 실행
+cursor.execute("SELECT * FROM main_table")
+
+# 결과 가져오기
+result = cursor.fetchall()
+
+# 결과 출력
+for row in result:
+    print(row)
+
+# 연결 종료
+conn.close()

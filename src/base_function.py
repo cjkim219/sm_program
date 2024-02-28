@@ -208,6 +208,42 @@ class mysql_set:
         return result
     
     
+    def select_query_distinct(self, columns, table = con.table_name):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT DISTINCT {columns} FROM {table}"
+                cur.execute(sql)
+                result = cur.fetchall()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
+    def select_query_distinct_cond(self, columns, conditions, table = con.table_name):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"SELECT DISTINCT {columns} FROM {table} WHERE {conditions}"
+                cur.execute(sql)
+                result = cur.fetchall()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
+        return result
+    
+    
     def select_order_query(self, columns, conditions, order_column, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
@@ -226,12 +262,12 @@ class mysql_set:
         return result
     
     
-    def select_query_distinct_cond(self, columns, conditions, table = con.table_name):
+    def select_order_query_distinct(self, columns, order_column, table = con.table_name):
         conn = pymysql.connect(**self.config)
         
         try:
             with conn.cursor() as cur:
-                sql = f"SELECT DISTINCT {columns} FROM {table} WHERE {conditions}"
+                sql = f"SELECT DISTINCT {columns} FROM {table} ORDER BY {order_column}"
                 cur.execute(sql)
                 result = cur.fetchall()
                     
@@ -261,41 +297,6 @@ class mysql_set:
             
         return result
     
-    
-    def select_query_distinct(self, columns, table = con.table_name):
-        conn = pymysql.connect(**self.config)
-        
-        try:
-            with conn.cursor() as cur:
-                sql = f"SELECT DISTINCT {columns} FROM {table}"
-                cur.execute(sql)
-                result = cur.fetchall()
-                    
-        except SyntaxError:
-            print("syntax error")
-            
-        finally:
-            conn.close()
-            
-        return result
-    
-    
-    def select_order_query_distinct(self, columns, order_column, table = con.table_name):
-        conn = pymysql.connect(**self.config)
-        
-        try:
-            with conn.cursor() as cur:
-                sql = f"SELECT DISTINCT {columns} FROM {table} ORDER BY {order_column}"
-                cur.execute(sql)
-                result = cur.fetchall()
-                    
-        except SyntaxError:
-            print("syntax error")
-            
-        finally:
-            conn.close()
-            
-        return result
     
     def delete_query_cond(self, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)

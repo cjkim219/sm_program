@@ -19,8 +19,22 @@ config = {
     'user': 'root',
     'password': '123!',
     'host': '127.0.0.1',
-    'database': 'info',
+    'database': 'info'
 }
+
+
+# host_ip = '172.30.1.69'
+# port = 3306
+
+# config = {
+#     'user': 'sam',
+#     'password': 'sam123',
+#     'host': '172.30.1.69',
+#     'port': 3306,
+#     'database': 'info'
+# }
+
+
 
 table_name = "main_table"
 

@@ -69,7 +69,7 @@ def Name_list_button(Frame_class, C_List, N_List, user_id):
     var = tk.StringVar()
     N_entry = Frame_class.gen_entry(var, 350, 280, 15)
     
-    Frame_class.gen_button_fs("이동", empty_function, 355, 360)
+    Frame_class.gen_button_fs("이동", lambda: btftn.transfer_N_listbox(Frame_class, user_id, N_List), 355, 360)
     Frame_class.gen_button_fs("수정", empty_function, 415, 360)
     Frame_class.gen_button_fs("추가", lambda: btftn.add_N_listbox(Frame_class, N_List, N_entry, C_List, user_id,
                                                                 f"{con.column[0]}, {con.column[1]}, {con.column[2]}", var.get()), 355, 400)
