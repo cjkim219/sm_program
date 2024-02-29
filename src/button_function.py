@@ -84,7 +84,49 @@ def lookup_C_listbox(Frame_class, C_List, T_List, N_List):
         conditions = f"{con.column[1]} IS NOT NULL AND {con.column[0]} = '{selected_data}'"
         bftn.clear(N_List)
         bftn.show_list_box_cond(C_List, f"{con.column[1]}", conditions, f"{con.column[1]}")
+
+
+def modify_C_listbox(Frame_class, C_List, user_id, var):
+    sql_set = bftn.mysql_set(con.config)
+    selected_data_c = bftn.get_selectitem(Frame_class, C_List, "반을 선택해 주세요.")
         
+    conditions = f"{con.column[1]} = '{selected_data_c}'"
+    res = sql_set.select_query(f"{con.column[0]}", conditions)
+    
+    authority = bftn.authority_check(res, acc.acc_to_tname[user_id.get()])
+
+    if selected_data_c == False:
+        return 0
+    elif authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    else:
+        sub_wd = Frame_class.sub_wd()
+        sub_wd_class = bftn.window_set(sub_wd)
+        sub_wd_class.set_title("반 이름 변경")
+        sub_wd_class.set_size("195x110")
+        sub_wd_class.gen_label("변경할 내용을 입력해 주세요.", 15, 10)
+        modify_entry = sub_wd_class.gen_entry(var, 18, 40, 22)
+        sub_wd_class.gen_button("확인", lambda: sub_command_5(sub_wd_class, C_List, modify_entry, selected_data_c, f"{con.column[1]}", user_id), 45, 70)
+        sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 70)
+
+
+def sub_command_5(sub_wd_class, C_List, modify_entry, selected_data_c, modify_column, user_id):
+    
+    sql_set = bftn.mysql_set(con.config)
+
+    new_data = modify_entry.get()
+    cond = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}' AND {modify_column} = '{selected_data_c}'"
+    update_data = f"{modify_column} = '{new_data}'"
+
+    sql_set.update_query_value(update_data, cond)
+
+    conditions = f"{con.column[1]} IS NOT NULL AND {con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
+    bftn.clear(C_List)
+    bftn.show_list_box_cond(C_List, f"{con.column[1]}", conditions, f"{con.column[1]}")
+
+    sub_wd_class.clear_wd()
+
 
 def delete_C_listbox(Frame_class, C_List, user_id):
     

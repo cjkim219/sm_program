@@ -54,9 +54,10 @@ def Teacher_list_button(Frame_class, T_List, C_List, N_List, user_id):
 def Class_list_button(Frame_class, C_List, N_List, user_id):
     
     var = tk.StringVar()
+    var1 = tk.StringVar()
     C_entry = Frame_class.gen_entry(var, 200, 280, 15)
     
-    Frame_class.gen_button_fs("수정", empty_function, 265, 360)
+    Frame_class.gen_button_fs("수정", lambda: btftn.modify_C_listbox(Frame_class, C_List, user_id, var1), 265, 360)
     Frame_class.gen_button_fs("조회", lambda: btftn.lookup_N_listbox(Frame_class, C_List, N_List), 265, 320)
     Frame_class.gen_button_fs("추가", lambda: btftn.add_C_listbox(Frame_class, C_List, C_entry, user_id,
                                                                 f"{con.column[0]}, {con.column[1]}", var.get()), 205, 400)
