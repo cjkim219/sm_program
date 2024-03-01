@@ -413,6 +413,8 @@ class consult_content:
         self.subject_var.set("")
         self.content.delete("1.0", tk.END)
         
+    def get(self):
+        return self.subject_var.get(), self.date_var.get(), self.content.get("1.0", tk.END)
         
         
 class exam_content:
@@ -627,6 +629,25 @@ def authority_check(query_result, check_data):
     authority = False
     for val in query_result:
         if val[0] == check_data:
+            authority = True
+            break
+    return authority
+
+
+def authority_check_2(query_result, check_data):
+    authority = False
+    for val in query_result:
+        if f"{val[1]}" == f"{check_data}":
+            authority = True
+            break
+    return authority
+
+
+def authority_check_tuple(query_result, check_data_1, check_data_2):
+    authority = False
+
+    for val in query_result:
+        if f"{val[0]}" == f"{check_data_1}" and f"{val[1]}" == f"{check_data_2}":
             authority = True
             break
     return authority

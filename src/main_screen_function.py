@@ -40,12 +40,13 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
 def Teacher_list_button(Frame_class, T_List, C_List, N_List, user_id):
     
     var = tk.StringVar()
+    var1 = tk.StringVar()
     Frame_class.gen_button_fs("조회", lambda: btftn.lookup_C_listbox(Frame_class, C_List, T_List, N_List), 115, 320)
     T_entry = Frame_class.gen_entry(var, 50, 280, 15)
     
     for author_id in acc.T_list_button_authority:
         if acc.acc_to_tname[user_id.get()] == author_id:
-            Frame_class.gen_button_fs("수정", empty_function, 115, 360)        
+            Frame_class.gen_button_fs("수정", lambda: btftn.modify_T_listbox(Frame_class, T_List, var1), 115, 360)        
             Frame_class.gen_button_fs("추가", lambda: btftn.add_T_listbox(Frame_class, T_List, T_entry, f"{con.column[0]}", var.get()), 55, 400)
             Frame_class.gen_button_fs("삭제", lambda: btftn.delete_T_listbox(Frame_class, T_List), 115, 400)
         
@@ -68,10 +69,11 @@ def Class_list_button(Frame_class, C_List, N_List, user_id):
 def Name_list_button(Frame_class, C_List, N_List, user_id):
     
     var = tk.StringVar()
+    var1 = tk.StringVar()
     N_entry = Frame_class.gen_entry(var, 350, 280, 15)
     
     Frame_class.gen_button_fs("이동", lambda: btftn.transfer_N_listbox(Frame_class, user_id, N_List), 355, 360)
-    Frame_class.gen_button_fs("수정", empty_function, 415, 360)
+    Frame_class.gen_button_fs("수정", lambda: btftn.modify_N_listbox(Frame_class, N_List, user_id, var1), 415, 360)
     Frame_class.gen_button_fs("추가", lambda: btftn.add_N_listbox(Frame_class, N_List, N_entry, C_List, user_id,
                                                                 f"{con.column[0]}, {con.column[1]}, {con.column[2]}", var.get()), 355, 400)
     Frame_class.gen_button_fs("삭제", lambda: btftn.delete_N_listbox(Frame_class, N_List, user_id), 415, 400)
@@ -187,7 +189,7 @@ def consult_info(tab, consult_content, user_id):
     consult_date_cbox = tab_class.gen_combobox(option, 12, 15, 305)
     
     tab_class.gen_button_fs("조회", lambda: btftn.lookup_consult_info(tab_class, consult_content, consult_date_cbox), 256, 305)
-    tab_class.gen_button_fs("수정", empty_function, 316, 305)
+    tab_class.gen_button_fs("수정", lambda: btftn.modify_consult_info(tab_class, consult_content, consult_date_cbox, user_id), 316, 305)
     tab_class.gen_button_fs("삭제", lambda: btftn.delete_consult_info(tab_class, consult_content, consult_date_cbox, user_id), 376, 305)
     tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, user_id, consult_content, consult_date_cbox), 436, 305)
     

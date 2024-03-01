@@ -79,3 +79,4 @@ db_exam_info_length = len(exam_column)
 ### global variable ###
 selected_class_name = False
 selected_st_name = False
+selected_consult_date = ""
