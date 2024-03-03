@@ -61,9 +61,9 @@ consult_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "TEX
 
 exam_table_name = "exam_result"
 
-exam_column = ["teacher", "st_name", "date", "exam_type", "exam_range", "score"]
+exam_column = ["teacher", "st_name", "date", "exam_type", "exam_range", "score", "number"]
 
-exam_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "VARCHAR(50)", "TINYINT"]
+exam_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "VARCHAR(50)", "TINYINT", "SMALLINT"]
 
 
 

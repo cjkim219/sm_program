@@ -25,9 +25,9 @@ def top_frame(main_screen, user_id):
     
 
     # 버튼 함수 추가
-    Frame_class.gen_button_bs("공지사항", empty_function, 15, 3, 300, 30)
-    Frame_class.gen_button_bs("시간표", empty_function, 15, 3, 420, 30)
-    Frame_class.gen_button_bs("일정", empty_function, 15, 3, 540, 30)
+    # Frame_class.gen_button_bs("공지사항", empty_function, 15, 3, 300, 30)
+    # Frame_class.gen_button_bs("시간표", empty_function, 15, 3, 420, 30)
+    # Frame_class.gen_button_bs("일정", empty_function, 15, 3, 540, 30)
     Frame_class.gen_button("관리자 모드", lambda: root_mod(Frame_class, user_id), 1000, 10)
         
     

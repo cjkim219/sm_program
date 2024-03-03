@@ -205,35 +205,30 @@
 # label.pack()
 
 
-# # Tkinter 이벤트 루프 시작
-# root.mainloop()
+import tkinter as tk
 
+def on_double_click(event):
+    index = listbox.curselection()
+    if index:
+        value = listbox.get(index)
+        print("Double click on item:", value)
+        # Button 클릭
+        button.invoke()
 
-import pymysql
+root = tk.Tk()
+root.title("Double Click Event Handling with Button Click in ListBox")
 
-# MySQL 서버 연결 설정
-conn = pymysql.connect(
-    host='172.30.1.69',
-    port=3306,
-    user='sam',
-    password='sam123',
-    database='info',
-    charset='utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor
-)
+listbox = tk.Listbox(root)
+listbox.pack()
 
-# 커서 생성
-cursor = conn.cursor()
+for i in range(10):
+    listbox.insert(tk.END, f"Item {i+1}")
 
-# SQL 쿼리 실행
-cursor.execute("SELECT * FROM main_table")
+# Button 생성
+button = tk.Button(root, text="Click me")
+button.pack()
 
-# 결과 가져오기
-result = cursor.fetchall()
+# 더블클릭 이벤트 바인딩
+listbox.bind("<Double-1>", on_double_click)
 
-# 결과 출력
-for row in result:
-    print(row)
-
-# 연결 종료
-conn.close()
+root.mainloop()

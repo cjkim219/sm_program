@@ -18,6 +18,7 @@ class window_set:
         self.text = ""
         self.listbox = ""
         self.combobox = ""
+        self.tree = ""
         
     def set_title(self, title):
         self.new_window.title(title)
@@ -44,6 +45,7 @@ class window_set:
     def gen_button_fs(self, bt_text, cm_ftn, b_x, b_y, font=1):
         self.button = tk.Button(self.new_window, text=bt_text, command=cm_ftn, font=font)
         self.button.place(x=b_x, y=b_y)
+        return self.button
     
     # 프래임 생성 메서드 - main window 내부를 구획으로 나누는 sub window 느낌 (bg는 배경 색상 선택)
     def gen_Frame(self, width, height, bg):
@@ -68,6 +70,42 @@ class window_set:
         self.text = tk.Text(self.new_window, width=T_width, height=height)
         self.text.place(x=t_x, y=t_y)
         
+    
+    def gen_treeview(self, columns, t_x, t_y):
+        self.tree = ttk.Treeview(self.new_window, columns=columns, height=10, show='headings')
+        self.tree.place(x=t_x, y=t_y)
+        return self.tree
+    
+    
+    def column_sort(self, col):
+    # 열을 기준으로 데이터 정렬
+        data = [(self.tree.set(child, col), child) for child in self.tree.get_children('')]
+        data.sort()
+        for index, (val, child) in enumerate(data):
+            self.tree.move(child, '', index)
+            
+            
+    def column_sort_numeric(self, col):
+    # 열을 기준으로 데이터 정렬 (숫자값 비교 함수 사용)
+        data = [(float(self.tree.set(child, col)), child) for child in self.tree.get_children('')]
+        data.sort()
+        for index, (_, child) in enumerate(data):
+            self.tree.move(child, '', index)
+            
+            
+    def on_double_click(self, event, exam_content):
+        item = self.tree.selection()[0]
+        value = self.tree.item(item, 'values')
+        exam_content.date_var.set(value[1])
+        exam_content.exam_type_var.set(value[2])
+        exam_content.exam_range_var.set(value[3])
+        exam_content.score_var.set(value[4])
+        
+        
+        
+    def on_double_click_btn(self, event, btn):
+        btn.invoke()
+    
         
     def label_ntxt(self, new_text):
         self.label.config(text=new_text)
@@ -595,6 +633,31 @@ def show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions,
         Type_List.insert(tk.END, row[3])
         Range_List.insert(tk.END, row[4])
         Score_List.insert(tk.END, row[5])
+        
+        
+def get_exam_list(options, column, st_name):
+    
+    sql_set = mysql_set(con.config)
+    conditions = f"{con.exam_column[1]} = '{st_name}'"
+    res = sql_set.select_order_query_distinct_cond(column, conditions, column, con.exam_table_name)
+    for i in res:
+        options.append(i)
+        
+        
+        
+def get_all_exam_list(st_name):
+    
+    sql_set = mysql_set(con.config)
+    cond = f"{con.exam_column[1]} = '{st_name}'"
+    res = sql_set.select_order_query("*", cond, con.exam_column[6], con.exam_table_name)
+    
+    exam_content = []
+    
+    for val in res:
+        exam_content.append((val[6], val[2], val[3], val[4], val[5]))
+        
+    return exam_content
+    
 
 
 def get_selectitem(Frame_class, T_list, errorText):
@@ -721,38 +784,25 @@ def add_table_query(start):
         conn.close()
         
         
-def combobox_list_update(cond, combobox, cond_column_1, cond_column_2, order_column):
+def combobox_list_update(cond, combobox_1, combobox_2, cond_column_1, cond_column_2, order_column):
     
     sql_set = mysql_set(con.config)
     
     update_list = []
+    update_list_2 = ["전체"]
     conditions = f"{cond_column_1} = '{cond}'"
     
     res = sql_set.select_order_query(f"{cond_column_2}", conditions, f"{order_column}", con.consult_table_name)
-
     for val in res:
         update_list.append(val[0].strftime("%Y-%m-%d"))
-
-    combobox['values'] = update_list
-    
-    
-    
-# def get_option_date(cond, cond_column_1, cond_column_2):
-    
-#     sql_set = mysql_set(con.config)
-    
-#     option = []
-#     conditions = f"{cond_column_1} = '{cond}'"
-    
-#     res = sql_set.select_query(f"{cond_column_2}", conditions, con.consult_table_name)
-
-#     for val in res:
-#         order_date = val[0]
-#         formatted_date = order_date.strftime("%Y-%m-%d")
-#         option.append(str(formatted_date))
-
-#     return option
         
+    get_exam_list(update_list_2, con.exam_column[3], con.selected_st_name)
+
+    combobox_1['values'] = update_list
+    combobox_2['values'] = update_list_2
+    
+    
+
 def today():
     now = datetime.now()
 

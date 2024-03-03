@@ -386,7 +386,7 @@ def student_transfer(sub_wd_class, N_List, st_name, T_list_cbox, C_list_cbox):
         sub_wd_class.clear_wd()
         
     
-def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_cbox):
+def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_cbox, exam_type_cbox):
     
     con.selected_st_name = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
     if con.selected_st_name == False:
@@ -395,9 +395,10 @@ def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date
         conditions = f"{con.column[2]} = '{con.selected_st_name}'"
         consult_content.clear()
         bftn.show_info_cond(student_info, conditions)
-        bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
+        bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, exam_type_cbox,
                                   con.consult_column[1], con.consult_column[2], con.consult_column[2])
         consult_date_cbox.set("")
+        exam_type_cbox.set("")
     
     
 def add_basic_info(Frame_class, user_id, student_info):
@@ -622,6 +623,7 @@ def delete_consult_info(Frame_class, consult_content, consult_date_cbox, user_id
         sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
         
     
+    
 def sub_command_4(sub_wd_class, consult_content, consult_date_cbox, selected_date):
     
     sql_set = bftn.mysql_set(con.config)
@@ -634,20 +636,14 @@ def sub_command_4(sub_wd_class, consult_content, consult_date_cbox, selected_dat
                               con.consult_column[1], con.consult_column[2], con.consult_column[2] )
 
 
-# exam_column = ["teacher", "st_name", "date", "exam_type", "exam_range", "score"]
-def add_exam_info(Frame_class, exam_content, user_id, Date_List, Type_List, Range_List, Score_List):
+
+def add_exam_info(Frame_class, tree, exam_content, user_id):
     
     sql_set = bftn.mysql_set(con.config)
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
 
     authority = bftn.authority_check(res, con.selected_st_name)
-    
-    conditions = f"{con.exam_column[1]} = '{con.selected_st_name}'"    
-    res = sql_set.select_query_distinct_cond(f"{con.exam_column[3]}", conditions, con.exam_table_name)
-        
-    exam_overlap = bftn.authority_check_val(res, exam_content.exam_type_var.get())
-    ### exam_overlap 은 exam_type -> number 로 바꾸기...
 
     Columns = f"{con.exam_column[0]}, {con.exam_column[1]}, {con.exam_column[2]}, {con.exam_column[3]}, {con.exam_column[4]}, {con.exam_column[5]}"
     
@@ -656,39 +652,179 @@ def add_exam_info(Frame_class, exam_content, user_id, Date_List, Type_List, Rang
     elif authority == False:
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "권한이 없습니다.")
-    elif exam_overlap == True:
-        sub_wd = Frame_class.sub_wd()
-        bftn.Error_Box(sub_wd, "시험기록이 존재합니다.")
     else:
-        if exam_content.exam_type_var.get() != "":
+        if exam_content.exam_type_var.get() != "" and exam_content.exam_range_var.get() != "" and exam_content.score_var.get() != "":
             if exam_content.date_var.get() == "":
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{bftn.today()}', '{exam_content.exam_type_var.get()}', '{exam_content.exam_range_var.get()}', '{exam_content.score_var.get()}"
                 sql_set.insert_query_str(Columns, query_str, con.exam_table_name)
                 exam_content.clear()
-                conditions_exam = f"{con.exam_column[1]} = '{con.selected_st_name}'"
-                bftn.show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions_exam, f"{con.exam_column[2]}")
+                tree.delete(*tree.get_children())
+                all_exam_content = bftn.get_all_exam_list(con.selected_st_name)
+                for content in all_exam_content:
+                    tree.insert('', 'end', values=content)
             else:
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{exam_content.date_var.get()}', '{exam_content.exam_type_var.get()}', '{exam_content.exam_range_var.get()}', '{exam_content.score_var.get()}"
                 sql_set.insert_query_str(Columns, query_str, con.exam_table_name)
                 exam_content.clear()
-                conditions_exam = f"{con.exam_column[1]} = '{con.selected_st_name}'"
-                bftn.show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions_exam, f"{con.exam_column[2]}")
+                tree.delete(*tree.get_children())
+                all_exam_content = bftn.get_all_exam_list(con.selected_st_name)
+                for content in all_exam_content:
+                    tree.insert('', 'end', values=content)
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
             
             
             
-def lookup_exam_info(Frame_class, exam_type_cbox, Date_List, Type_List, Range_List, Score_List):
-            
+def lookup_exam_info(Frame_class, exam_type_cbox, tree):
+
+    tree.delete(*tree.get_children())
+    
     selected_date = exam_type_cbox.get()
     if selected_date == "":
         sub_wd = Frame_class.sub_wd()
         bftn.Error_Box(sub_wd, "시험종류를 선택해주세요.")
     else:
+        all_exam_content = bftn.get_all_exam_list(con.selected_st_name)
         if exam_type_cbox.get() == "전체":
-            conditions = f"{con.exam_column[1]} = '{con.selected_st_name}'"
+            for content in all_exam_content:
+                tree.insert('', 'end', values=content)
         else:
-            conditions = f"{con.exam_column[1]} = '{con.selected_st_name}' AND {con.exam_column[3]} = '{selected_date}'"
-            
-        bftn.show_exam_list_box(Date_List, Type_List, Range_List, Score_List, conditions, f"{con.exam_column[2]}")
+            for content in all_exam_content:
+                if content[2] == selected_date:
+                    tree.insert('', 'end', values=content)
+                    
+                    
+                    
+def modify_exam_info(Frame_class, exam_content, tree, user_id):
+    
+    sql_set = bftn.mysql_set(con.config)
+    
+    selected_date_id = tree.selection()  
+    selected_data = tree.item(selected_date_id)['values']
+        
+    conditions = f"{con.exam_column[6]} = '{selected_data[0]}'"
+    res = sql_set.select_query_distinct_cond("*", conditions, con.exam_table_name)
+    authority = bftn.authority_check(res, acc.acc_to_tname[user_id.get()])
+    
+    if selected_date_id == ():
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "내용을 선택해주세요.")
+    else:
+        if authority == False:
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "권한이 없습니다.")
+        else:
+            sub_wd = Frame_class.sub_wd()
+            sub_wd_class = bftn.window_set(sub_wd)
+            sub_wd_class.set_title("주의")
+            sub_wd_class.set_size(con.war_box_size)
+            sub_wd_class.gen_label("변경하시겠습니까?", 45, 10)
+            sub_wd_class.gen_button("확인", lambda: sub_command_10(sub_wd_class, exam_content, selected_data[0]), 45, 40)
+            sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
+        
+
+
+def sub_command_10(sub_wd_class, exam_content, exam_number):
+    
+    sql_set = bftn.mysql_set(con.config)
+    
+    cond = f"{con.exam_column[6]} = {exam_number}"
+    update_data = f"{con.exam_column[2]} = '{exam_content.date_var.get()}', {con.exam_column[3]} = '{exam_content.exam_type_var.get()}', {con.exam_column[4]} = '{exam_content.exam_range_var.get()}', {con.exam_column[5]} = {exam_content.score_var.get()}"
+    sql_set.update_query_value(update_data, cond, con.exam_table_name)
+    sub_wd_class.clear_wd()
+    
+                    
+                    
+def delete_exam_info(Frame_class, tree, user_id):
+    
+    sql_set = bftn.mysql_set(con.config)
+    selected_date_id = tree.selection()    
+        
+    if selected_date_id == ():
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "내용을 선택해주세요.")
+    else:
+        selected_data = tree.item(selected_date_id)['values']
+        conditions = f"{con.exam_column[6]} = '{selected_data[0]}'"
+        res = sql_set.select_query_distinct_cond(f"{con.exam_column[0]}, {con.exam_column[6]}", conditions, con.exam_table_name)
+        authority = bftn.authority_check(res, acc.acc_to_tname[user_id.get()])
+        if authority == False:
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "권한이 없습니다.")
+        else:
+            sub_wd = Frame_class.sub_wd()
+            sub_wd_class = bftn.window_set(sub_wd)
+            sub_wd_class.set_title("주의")
+            sub_wd_class.set_size(con.war_box_size)
+            sub_wd_class.gen_label("삭제하시겠습니까?", 45, 10)
+            sub_wd_class.gen_button("확인", lambda: sub_command_9(sub_wd_class, tree, selected_date_id), 45, 40)
+            sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
+        
+        
+def sub_command_9(sub_wd_class, tree, selected_date_id):
+    
+    sql_set = bftn.mysql_set(con.config)
+    
+    sub_wd_class.clear_wd()
+    
+    selected_data = tree.item(selected_date_id)['values']
+    
+    conditions = f"{con.exam_column[6]} = '{selected_data[0]}'"
+    sql_set.delete_query_cond(conditions, con.exam_table_name)
+    tree.delete(selected_date_id)
+    
+    
+        
+def empty_function():
+    a=1
+    
+    
+# 완료된 교재 목록 볼때...
+def lookup_allexam_info(Frame_class):
+        
+    sub_wd = Frame_class.sub_wd()
+    sub_wd_class = bftn.window_set(sub_wd)
+    sub_wd_class.set_title("시험결과 전체보기")
+    sub_wd_class.set_size("650x450")
+    
+    options = ["전체"]
+    bftn.get_exam_list(options, con.exam_column[3], con.selected_st_name)
+    
+    sub_wd_class.gen_label("시험종류 선택", 10, 10)
+    exam_type_cbox = sub_wd_class.gen_combobox(options, 12, 10, 35)
+    
+    sub_wd_class.gen_button_fs("조회", empty_function, 150, 35)
+    sub_wd_class.gen_button_fs("수정", empty_function, 215, 35)
+    sub_wd_class.gen_button_fs("삭제", empty_function, 280, 35)
+    
+    exam_columns = ('col 1', 'col 2', 'col 3', 'col 4', 'col 5')
+    tree = sub_wd_class.gen_treeview(exam_columns, 10, 80)
+    
+    tree.heading('col 1', text='번호')
+    tree.heading('col 2', text='날짜')
+    tree.heading('col 3', text='시험종류')
+    tree.heading('col 4', text='시험범위')
+    tree.heading('col 5', text='점수')
+    
+    tree.column('col 1', width=50)
+    tree.column('col 2', width=100)
+    tree.column('col 3', width=150)
+    tree.column('col 4', width=250)
+    tree.column('col 5', width=75)
+    
+    
+    all_exam_content = bftn.get_all_exam_list(con.selected_st_name)
+    
+    for content in all_exam_content:
+        tree.insert('', 'end', values=content)
+    
+    # selected_date = exam_type_cbox.get()
+    # if selected_date == "":
+    #     sub_wd = Frame_class.sub_wd()
+    #     bftn.Error_Box(sub_wd, "시험종류를 선택해주세요.")
+    # else:
+    #     if exam_type_cbox.get() == "전체":
+    #         conditions = f"{con.exam_column[1]} = '{con.selected_st_name}'"
+    #     else:
+    #         conditions = f"{con.exam_column[1]} = '{con.selected_st_name}' AND {con.exam_column[3]} = '{selected_date}'"
