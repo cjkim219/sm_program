@@ -196,7 +196,7 @@ def consult_info(tab, consult_content, user_id):
     consult_date_cbox = tab_class.gen_combobox(option, 12, 15, 305)
     
     tab_class.gen_button_fs("조회", lambda: btftn.lookup_consult_info(tab_class, consult_content, consult_date_cbox), 256, 305)
-    tab_class.gen_button_fs("수정", lambda: btftn.modify_consult_info(tab_class, consult_content, consult_date_cbox, user_id), 316, 305)
+    tab_class.gen_button_fs("수정", lambda: btftn.modify_consult_info(tab_class, consult_content, user_id), 316, 305)
     tab_class.gen_button_fs("삭제", lambda: btftn.delete_consult_info(tab_class, consult_content, consult_date_cbox, user_id), 376, 305)
     tab_class.gen_button_fs("입력", lambda: btftn.add_consult_info(tab_class, user_id, consult_content, consult_date_cbox), 436, 305)
     

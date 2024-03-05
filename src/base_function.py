@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import re
 
 from datetime import datetime
 
@@ -7,6 +8,7 @@ import pymysql
 
 
 import config_set as con
+import account_data as acc
 
 
 class window_set:
@@ -24,7 +26,13 @@ class window_set:
         self.new_window.title(title)
         
     def set_size(self, screen_size):
-        self.new_window.geometry(screen_size)
+        screen_width = self.new_window.winfo_screenwidth()
+        screen_height = self.new_window.winfo_screenheight()
+        width, height = get_size(screen_size)
+        x_coordinate = (screen_width / 2) - (width / 2)
+        y_coordinate = (screen_height / 2) - (height / 2)
+        self.new_window.geometry("%dx%d+%d+%d" % (width, height, x_coordinate, y_coordinate))
+        
               
     def set_fullscreen(self):
         self.new_window.bind("<F11>", lambda event: self.new_window.attributes("-fullscreen", not self.new_window.attributes("-fullscreen")))
@@ -681,11 +689,16 @@ def str_combine(str_1, str_2):
 
 def Error_Box(sub_wd, text):
     sub_wd.title("오류")
-    sub_wd.geometry(con.war_box_size)
+    screen_width = sub_wd.winfo_screenwidth()
+    screen_height = sub_wd.winfo_screenheight()
+    width, height = get_size(con.war_box_size)
+    x_coordinate = (screen_width / 2) - (width / 2)
+    y_coordinate = (screen_height / 2) - (height / 2)
+    sub_wd.geometry("%dx%d+%d+%d" % (width, height, x_coordinate, y_coordinate))
     label = tk.Label(sub_wd, text=text, anchor="center")
     label.place(x=10, y=10)
     btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
-    btn.place(x=10, y=30)
+    btn.place(x=82, y=40)
     
     
 def authority_check(query_result, check_data):
@@ -816,3 +829,14 @@ def today():
 
 def set_today(entry):
     entry.set(today())
+    
+    
+    
+def config_set(user_id):
+    con.config.update({'user': acc.acc_to_dbacc[user_id.get()], 'password': acc.db_connect_account_info[acc.acc_to_dbacc[user_id.get()]]})
+    
+    
+    
+def get_size(size_str):
+    size_val = re.findall(r'\d+', size_str)
+    return int(size_val[0]), int(size_val[1])

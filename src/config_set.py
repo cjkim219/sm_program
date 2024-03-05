@@ -9,22 +9,24 @@ login_screen_size = "296x240"
 war_box_size = "200x80"
 
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
+# script_dir = os.path.dirname(os.path.abspath(__file__))
+# logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
 
-# logo_directory = r"..\images\higher_math_logo.png"
-
-
-config = {
-    'user': 'root',
-    'password': '123!',
-    'host': '127.0.0.1',
-    'database': 'info'
-}
+logo_directory = r"..\images\higher_math_logo.png"
 
 
+host_ip = '127.0.0.1'
 # host_ip = '172.30.1.69'
-# port = 3306
+port = 3306
+db_name = 'info'
+
+config = {'user': '',
+          'password': '',
+          'host': host_ip,
+          'port': port,
+          'database': db_name}
+
+
 
 # config = {
 #     'user': 'sam',

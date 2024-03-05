@@ -205,30 +205,70 @@
 # label.pack()
 
 
-import tkinter as tk
+# import tkinter as tk
 
-def on_double_click(event):
-    index = listbox.curselection()
-    if index:
-        value = listbox.get(index)
-        print("Double click on item:", value)
-        # Button 클릭
-        button.invoke()
+# def on_double_click(event):
+#     index = listbox.curselection()
+#     if index:
+#         value = listbox.get(index)
+#         print("Double click on item:", value)
+#         # Button 클릭
+#         button.invoke()
 
-root = tk.Tk()
-root.title("Double Click Event Handling with Button Click in ListBox")
+# root = tk.Tk()
+# root.title("Double Click Event Handling with Button Click in ListBox")
 
-listbox = tk.Listbox(root)
-listbox.pack()
+# listbox = tk.Listbox(root)
+# listbox.pack()
 
-for i in range(10):
-    listbox.insert(tk.END, f"Item {i+1}")
+# for i in range(10):
+#     listbox.insert(tk.END, f"Item {i+1}")
 
-# Button 생성
-button = tk.Button(root, text="Click me")
-button.pack()
+# # Button 생성
+# button = tk.Button(root, text="Click me")
+# button.pack()
 
-# 더블클릭 이벤트 바인딩
-listbox.bind("<Double-1>", on_double_click)
+# # 더블클릭 이벤트 바인딩
+# listbox.bind("<Double-1>", on_double_click)
 
-root.mainloop()
+# root.mainloop()
+
+# import tkinter as tk
+
+# def center_window(window, width, height):
+#     screen_width = window.winfo_screenwidth()
+#     screen_height = window.winfo_screenheight()
+
+#     x_coordinate = (screen_width / 2) - (width / 2)
+#     y_coordinate = (screen_height / 2) - (height / 2)
+
+#     window.geometry("%dx%d+%d+%d" % (width, height, x_coordinate, y_coordinate))
+
+# # 윈도우 생성
+# root = tk.Tk()
+# root.title("가운데 정렬")
+
+# # 윈도우 크기 설정
+# window_width = 400
+# window_height = 300
+# root.geometry("%dx%d" % (window_width, window_height))
+
+# # 윈도우를 화면의 중앙에 위치시키기
+# center_window(root, window_width, window_height)
+
+# # 윈도우 실행
+# root.mainloop()
+
+
+sam_str = "123x12"
+
+import re
+
+text = "12355x123"
+numbers = re.findall(r'\d+', text)
+if numbers:
+    value = int(numbers[0])
+    print(value)  # 123
+    print(int(numbers[1]))
+else:
+    print("No numbers found in the string.")

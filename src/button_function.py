@@ -6,8 +6,6 @@ import base_function as bftn
 import account_data as acc
 
 
-# db_conn_config = con.config
-
 def add_T_listbox(Frame_class, T_List, T_entry, Columns, Values):
 
     if Values != "":
@@ -376,7 +374,7 @@ def student_transfer(sub_wd_class, N_List, st_name, T_list_cbox, C_list_cbox):
     
     if authority == False:
         sub_wd = sub_wd_class.sub_wd()
-        bftn.Error_Box(sub_wd, "선택한 선생님에게 존재하지 않는 반입니다.")
+        bftn.Error_Box(sub_wd, "해당 선생님의 반이 아닙니다.")
     else:
         cond = f"{con.column[2]} = '{st_name}'"
         update_data = f"{con.column[0]} = '{selected_T}', {con.column[1]} = '{selected_C}'"
@@ -404,7 +402,6 @@ def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date
 def add_basic_info(Frame_class, user_id, student_info):
     
     sql_set = bftn.mysql_set(con.config)
-    # con.selected_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
     
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
@@ -445,7 +442,6 @@ def add_basic_info(Frame_class, user_id, student_info):
 def add_class_info(Frame_class, user_id, student_info):
     
     sql_set = bftn.mysql_set(con.config)
-    # con.selected_data = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
     
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
     res = sql_set.select_query_distinct_cond(f"{con.column[2]}", conditions)
@@ -556,7 +552,7 @@ def lookup_consult_info(Frame_class, consult_content, consult_date_cbox):
     
 
     
-def modify_consult_info(Frame_class, consult_content, consult_date_cbox, user_id):
+def modify_consult_info(Frame_class, consult_content, user_id):
     
     sql_set = bftn.mysql_set(con.config)
     
@@ -579,12 +575,12 @@ def modify_consult_info(Frame_class, consult_content, consult_date_cbox, user_id
             sub_wd_class.set_title("주의")
             sub_wd_class.set_size(con.war_box_size)
             sub_wd_class.gen_label("변경하시겠습니까?", 45, 10)
-            sub_wd_class.gen_button("확인", lambda: sub_command_8(sub_wd_class, consult_content, consult_date_cbox), 45, 40)
+            sub_wd_class.gen_button("확인", lambda: sub_command_8(sub_wd_class, consult_content), 45, 40)
             sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
         
 
     
-def sub_command_8(sub_wd_class, consult_content, consult_date_cbox):
+def sub_command_8(sub_wd_class, consult_content):
     
     sql_set = bftn.mysql_set(con.config)
     

@@ -8,6 +8,7 @@ import account_data as acc
 
 def run_main_screen(main_screen, user_id):
        
+    bftn.config_set(user_id)
     top_frame(main_screen, user_id)
     mid_frame(main_screen, user_id)
     bot_frame(main_screen)
