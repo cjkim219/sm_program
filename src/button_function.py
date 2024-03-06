@@ -433,6 +433,8 @@ def add_basic_info(Frame_class, user_id, student_info):
         if update_data != []:
             cond = f"{con.column[2]} = '{con.selected_st_name}'"
             sql_set.update_query_value(bftn.list_to_str(update_data), cond)
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
@@ -482,11 +484,50 @@ def add_class_info(Frame_class, user_id, student_info):
         if update_data != []:
             cond = f"{con.column[2]} = '{con.selected_st_name}'"
             sql_set.update_query_value(bftn.list_to_str(update_data), cond)
+            sub_wd = Frame_class.sub_wd()
+            bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
             
-      
+            
+
+def textbook_complete(Frame_class, user_id, student_info):
+    
+    sql_set = bftn.mysql_set(con.config)
+    conditions = f"{con.column[2]} = '{con.selected_st_name}'"
+    res = sql_set.select_query_distinct_cond(f"{con.column[0]}", conditions)
+    
+    authority = bftn.authority_check(res, acc.acc_to_tname[user_id.get()])
+    
+    if authority == False:
+        sub_wd = Frame_class.sub_wd()
+        bftn.Error_Box(sub_wd, "권한이 없습니다.")
+    else:
+        sub_wd = Frame_class.sub_wd()
+        sub_wd_class = bftn.window_set(sub_wd)
+        sub_wd_class.set_title("주의")
+        sub_wd_class.set_size(con.war_box_size)
+        sub_wd_class.gen_label("이동하시겠습니까?", 45, 10)
+        sub_wd_class.gen_button("확인", lambda: sub_command_11(sub_wd_class, student_info), 45, 40)
+        sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
+        
+        
+def sub_command_11(sub_wd_class, student_info):
+    
+    sql_set = bftn.mysql_set(con.config)
+    
+    to_columns = f"({con.textbook_column[0]}, {con.textbook_column[1]}, {con.textbook_column[2]}, {con.textbook_column[3]}, {con.textbook_column[4]}, {con.textbook_column[5]}, {con.textbook_column[6]}, {con.textbook_column[7]})"
+    from_columns = f"{con.column[2]}, {con.column[24]}, {con.column[25]}, {con.column[26]}, {con.column[27]}, {con.column[28]}, {con.column[29]}, {con.column[31]}"
+    cond = f"{con.column[2]} = '{con.selected_st_name}'"
+    sql_set.insert_query_move_cond(con.textbook_table_name, to_columns, con.table_name, from_columns, cond)
+    
+    update_data = f"{con.column[24]} = NULL, {con.column[25]} = NULL, {con.column[26]} = NULL, {con.column[27]} = NULL, {con.column[28]} = NULL, {con.column[29]} = NULL, {con.column[31]} = NULL"
+    sql_set.update_query_value(update_data, cond)
+    
+    student_info.clear_textbook()
+    sub_wd_class.clear_wd()
+
 
 def add_consult_info(Frame_class, user_id, consult_content, consult_date_cbox):
     
@@ -526,13 +567,17 @@ def add_consult_info(Frame_class, user_id, consult_content, consult_date_cbox):
             if consult_content.date_var.get() == "":
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{bftn.today()}', '{consult_content.subject_var.get()}', '{content_var}"
                 sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
-                bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
+                bftn.consult_combobox_list_update(con.selected_st_name, consult_date_cbox, 
                                           con.consult_column[1], con.consult_column[2], con.consult_column[2])
+                sub_wd = Frame_class.sub_wd()
+                bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
             else:
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{consult_content.date_var.get()}', '{consult_content.subject_var.get()}', '{content_var}"
                 sql_set.insert_query_str(Columns, query_str, con.consult_table_name)
-                bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
+                bftn.consult_combobox_list_update(con.selected_st_name, consult_date_cbox, 
                                           con.consult_column[1], con.consult_column[2], con.consult_column[2])
+                sub_wd = Frame_class.sub_wd()
+                bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")
@@ -628,7 +673,7 @@ def sub_command_4(sub_wd_class, consult_content, consult_date_cbox, selected_dat
     conditions = f"{con.consult_column[1]} = '{con.selected_st_name}' AND {con.consult_column[2]} = '{selected_date}'"
     sql_set.delete_query_cond(conditions, con.consult_table_name)
     consult_content.clear()
-    bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, 
+    bftn.consult_combobox_list_update(con.selected_st_name, consult_date_cbox, 
                               con.consult_column[1], con.consult_column[2], con.consult_column[2] )
 
 
@@ -658,6 +703,8 @@ def add_exam_info(Frame_class, tree, exam_content, user_id):
                 all_exam_content = bftn.get_all_exam_list(con.selected_st_name)
                 for content in all_exam_content:
                     tree.insert('', 'end', values=content)
+                sub_wd = Frame_class.sub_wd()
+                bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
             else:
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{exam_content.date_var.get()}', '{exam_content.exam_type_var.get()}', '{exam_content.exam_range_var.get()}', '{exam_content.score_var.get()}"
                 sql_set.insert_query_str(Columns, query_str, con.exam_table_name)
@@ -666,6 +713,8 @@ def add_exam_info(Frame_class, tree, exam_content, user_id):
                 all_exam_content = bftn.get_all_exam_list(con.selected_st_name)
                 for content in all_exam_content:
                     tree.insert('', 'end', values=content)
+                sub_wd = Frame_class.sub_wd()
+                bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")

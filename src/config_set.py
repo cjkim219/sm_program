@@ -43,14 +43,14 @@ table_name = "main_table"
 column = ["teacher", "class_name", "st_name", "age", "gender", "school", "grade", 
           "birth", "st_HP", "pa_HP", "email", "address", "etc", "course", "class_day",
           "day1", "day2", "day3", "day1_start", "day1_end", "day2_start", "day2_end",
-          "day3_start", "day3_end", "main_book", "main_start_date", "main_end_date",
-          "sub_book", "sub_start_date", "sub_end_date", "text1", "text2"]
+          "day3_start", "day3_end", "main_book", "main_start", "main_end",
+          "sub_book", "sub_start", "sub_end", "text1", "text"]
 
 column_type = ["VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "CHAR(5)", "CHAR(5)", "VARCHAR(50)", "CHAR(5)", 
                "VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "VARCHAR(50)", "TEXT", "TEXT", "VARCHAR(50)",
                "CHAR(20)", "CHAR(5)", "CHAR(5)", "CHAR(5)", "CHAR(20)", "CHAR(20)", "CHAR(20)", "CHAR(20)",
-               "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "CHAR(20)",
-               "CHAR(20)", "TEXT", "VARCHAR(50)"]
+               "CHAR(20)", "CHAR(20)", "VARCHAR(50)", "DATE", "DATE", "VARCHAR(50)", "DATE",
+               "DATE", "TEXT", "VARCHAR(50)"]
 
 
 consult_table_name = "consult"
@@ -67,6 +67,13 @@ exam_column = ["teacher", "st_name", "date", "exam_type", "exam_range", "score",
 
 exam_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "VARCHAR(50)", "VARCHAR(50)", "TINYINT", "SMALLINT"]
 
+
+
+textbook_table_name = "textbook"
+
+textbook_column = ["st_name", "main_book", "main_start", "main_end", "sub_book", "sub_start", "sub_end", "text"]
+
+textbook_column_type = ["VARCHAR(50)", "VARCHAR(50)", "DATE", "DATE", "VARCHAR(50)", "DATE", "DATE", "VARCHAR(50)"]
 
 
 

@@ -235,6 +235,22 @@ class mysql_set:
         finally:
             conn.close()
             
+            
+    def insert_query_move_cond(self, to_table, to_columns, from_table, from_columns, cond):
+        conn = pymysql.connect(**self.config)
+        
+        try:
+            with conn.cursor() as cur:
+                sql = f"INSERT INTO {to_table} {to_columns} SELECT {from_columns} FROM {from_table} WHERE {cond}"
+                cur.execute(sql)
+                conn.commit()
+                    
+        except SyntaxError:
+            print("syntax error")
+            
+        finally:
+            conn.close()
+            
 
     def select_query(self, columns, conditions, table = con.table_name):
         conn = pymysql.connect(**self.config)
@@ -445,7 +461,16 @@ class student_info:
         self.sub_end_date_var.set("")
         self.text1.delete("1.0", tk.END)
         self.text2_var.set("")
-
+        
+        
+    def clear_textbook(self):
+        self.main_book_var.set("")
+        self.main_start_date_var.set("")
+        self.main_end_date_var.set("")
+        self.sub_book_var.set("")
+        self.sub_start_date_var.set("")
+        self.sub_end_date_var.set("")
+        self.text2_var.set("")
 
         
 class consult_content:
@@ -687,8 +712,8 @@ def str_combine(str_1, str_2):
 
 
 
-def Error_Box(sub_wd, text):
-    sub_wd.title("오류")
+def Error_Box(sub_wd, text, title = "오류"):
+    sub_wd.title(title)
     screen_width = sub_wd.winfo_screenwidth()
     screen_height = sub_wd.winfo_screenheight()
     width, height = get_size(con.war_box_size)
@@ -699,6 +724,7 @@ def Error_Box(sub_wd, text):
     label.place(x=10, y=10)
     btn = tk.Button(sub_wd, text="확인", command=sub_wd.destroy)
     btn.place(x=82, y=40)
+    
     
     
 def authority_check(query_result, check_data):
@@ -796,7 +822,23 @@ def add_table_query(start):
     finally:
         conn.close()
         
+
+
+def consult_combobox_list_update(cond, combobox_1, cond_column_1, cond_column_2, order_column):
+    
+    sql_set = mysql_set(con.config)
+    
+    update_list = []
+    conditions = f"{cond_column_1} = '{cond}'"
+    
+    res = sql_set.select_order_query(f"{cond_column_2}", conditions, f"{order_column}", con.consult_table_name)
+    for val in res:
+        update_list.append(val[0].strftime("%Y-%m-%d"))
         
+    combobox_1['values'] = update_list
+    
+    
+            
 def combobox_list_update(cond, combobox_1, combobox_2, cond_column_1, cond_column_2, order_column):
     
     sql_set = mysql_set(con.config)
@@ -818,13 +860,7 @@ def combobox_list_update(cond, combobox_1, combobox_2, cond_column_1, cond_colum
 
 def today():
     now = datetime.now()
-
-    year = now.year
-    month = now.month
-    day = now.day
-    
-    return f"{year}-{month}-{day}"
-
+    return now.strftime('%Y-%m-%d')
 
 
 def set_today(entry):

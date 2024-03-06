@@ -178,7 +178,7 @@ def class_info(tab, student_info, N_List, user_id):
     tab_class.gen_button("부교재 시작", lambda: bftn.set_today(student_info.sub_start_date_var), 159, 280)
     tab_class.gen_button("주교재 종료", lambda: bftn.set_today(student_info.main_end_date_var), 250, 280)
     tab_class.gen_button("부교재 종료", lambda: bftn.set_today(student_info.sub_end_date_var), 339, 280)
-    # tab_class.gen_button_bs("완료 항목으로 이동", empty_function, 22, 1, 70, 310)
+    tab_class.gen_button_bs("완료 항목으로 이동", lambda: btftn.textbook_complete(tab_class, user_id, student_info), 22, 1, 70, 310)
     # tab_class.gen_button_bs("완료된 교재", empty_function, 22, 1, 250, 310)
     tab_class.gen_button_bs("입력", lambda: btftn.add_class_info(tab_class, user_id, student_info), 6, 3, 428, 280)
     
