@@ -9,13 +9,13 @@ login_screen_size = "296x240"
 war_box_size = "200x80"
 
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
-mid_frame_image = os.path.join(script_dir, r"..\..\..\images\mid_frame_image.png")
+# script_dir = os.path.dirname(os.path.abspath(__file__))
+# logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
+# mid_frame_image = os.path.join(script_dir, r"..\..\..\images\mid_frame_image.png")
 
 
-# logo_directory = r"..\images\higher_math_logo.png"
-# mid_frame_image = r"..\images\mid_frame_image.png"
+logo_directory = r"..\images\higher_math_logo.png"
+mid_frame_image = r"..\images\mid_frame_image.png"
 
 
 host_ip = '127.0.0.1'

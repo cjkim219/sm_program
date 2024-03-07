@@ -1,28 +1,26 @@
 
-# 비밀번호 hashing...
-account_info = {"ssori": '123!', 
-                "cjkim": '1234!',
-                "123": '123',
-                "1234": '1234',
-                "12345": '12345'}
+account_info = {"원장ID": '---', 
+                "cjkim": '814f8473ac37e5288fed1225e3eefad1fe1b78f6895a299df2b0dacf29b5d084',
+                "민지ID": '---',
+                "재원ID": '---'}
 
 
-acc_to_tname = {"ssori": '원장',
+acc_to_tname = {"원장ID": '원장',
              "cjkim": '부원장',
-             "123": '부원장',
-             "1234": '윤재원',
-             "12345": '김민지'}
+             "민지ID": '김민지',
+             "재원ID": '윤재원'}
 
 
-acc_to_dbacc = {"ssori": 'mac_sam',
-             "cjkim": '부원장',
-             "123": 'mac_sam',
-             "1234": '윤재원',
-             "12345": 'mac'}
+acc_to_dbacc = {"원장ID": 'jhmok',
+             "cjkim": 'cjkim',
+             "민지ID": 'mjkim',
+             "재원ID": 'jwyun'}
 
 
-db_connect_account_info = {"mac_sam": 't123!',
-                           "mac": 'sam123'}
+db_connect_account_info = {"jhmok": 'jhmok!',
+                           "cjkim": 'cjkim!',
+                           "mjkim": 'mjkim!',
+                           "jwyun": 'jwyun!'}
 
 
 T_list_button_authority = {'원장', '부원장'}

@@ -233,42 +233,12 @@
 
 # root.mainloop()
 
-# import tkinter as tk
+import hashlib
 
-# def center_window(window, width, height):
-#     screen_width = window.winfo_screenwidth()
-#     screen_height = window.winfo_screenheight()
+def get_string_hash(string):
+    hashed = hashlib.sha256(string.encode()).hexdigest()
+    return hashed
 
-#     x_coordinate = (screen_width / 2) - (width / 2)
-#     y_coordinate = (screen_height / 2) - (height / 2)
-
-#     window.geometry("%dx%d+%d+%d" % (width, height, x_coordinate, y_coordinate))
-
-# # 윈도우 생성
-# root = tk.Tk()
-# root.title("가운데 정렬")
-
-# # 윈도우 크기 설정
-# window_width = 400
-# window_height = 300
-# root.geometry("%dx%d" % (window_width, window_height))
-
-# # 윈도우를 화면의 중앙에 위치시키기
-# center_window(root, window_width, window_height)
-
-# # 윈도우 실행
-# root.mainloop()
-
-
-sam_str = "123x12"
-
-import re
-
-text = "12355x123"
-numbers = re.findall(r'\d+', text)
-if numbers:
-    value = int(numbers[0])
-    print(value)  # 123
-    print(int(numbers[1]))
-else:
-    print("No numbers found in the string.")
+my_string = "Hello, world!"
+hash_value = get_string_hash(my_string)
+print("Hash value of", my_string, ":", hash_value)

@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import re
+import hashlib
 
 from datetime import datetime
 
@@ -77,6 +78,7 @@ class window_set:
     def gen_textbox(self, t_x, t_y, T_width, height):
         self.text = tk.Text(self.new_window, width=T_width, height=height)
         self.text.place(x=t_x, y=t_y)
+        return self.text
         
     
     def gen_treeview(self, columns, t_x, t_y):
@@ -884,3 +886,9 @@ def config_set(user_id):
 def get_size(size_str):
     size_val = re.findall(r'\d+', size_str)
     return int(size_val[0]), int(size_val[1])
+
+
+
+def get_string_hash(string):
+    hashed = hashlib.sha256(string.encode()).hexdigest()
+    return hashed
