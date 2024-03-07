@@ -159,6 +159,14 @@ class window_set:
         imgInsert.image = photo_sub
         imgInsert.place(x=i_x, y=i_y)
         
+        
+    def insert_image_orig(self, image_path, i_x, i_y):
+        photo = tk.PhotoImage(file=image_path)
+        # photo_sub = photo.subsample(10, 10)
+        imgInsert = tk.Label(self.new_window, image=photo)
+        imgInsert.image = photo
+        imgInsert.place(x=i_x, y=i_y)
+        
     # 라벨 + 엔트리 삽입 메서드, 엔트리는 텍스트를 입력할 수 있는 공간이며 입력받은 값을 변수로 활용 가능.
     # l_x, l_y 는 라벨의 x, y 좌표이며 e_x, e_y는 엔트리의 x, y좌표, L_width는 라벨의 너비, E_width는 엔트리의 너비
     # 엔트리는 한줄밖에 입력할 수 없어서 주소, 특이사항 같은 넓은 칸이 필요한 곳은 엔트리 대신 text로 대체함.

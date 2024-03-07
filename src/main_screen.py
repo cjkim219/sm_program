@@ -15,8 +15,11 @@ def run_main_screen(main_screen, user_id):
     
     
     
+    
+    
+    
 def top_frame(main_screen, user_id):
-    Frame_1 = main_screen.gen_Frame(1, 110, "blue")
+    Frame_1 = main_screen.gen_Frame(1, 110, "black")
     Frame_class = bftn.window_set(Frame_1)
     Frame_class.pack(tk.TOP, tk.X, 1)
         
@@ -38,6 +41,7 @@ def mid_frame(main_screen, user_id):
     Frame_class = bftn.window_set(Frame_2)
     Frame_class.pack(tk.TOP, tk.X, 1)
     
+    Frame_class.insert_image_orig(con.mid_frame_image, -5, -2)
     
     Frame_class.gen_label_rely_fs("선생님", 105, 0.05)
     T_List = Frame_class.gen_listbox_fs(50, 0.1)
@@ -57,7 +61,7 @@ def mid_frame(main_screen, user_id):
     
     
 def bot_frame(main_screen):
-    Frame_3 = bftn.window_set(main_screen.gen_Frame(1, 100, "yellow"))
+    Frame_3 = bftn.window_set(main_screen.gen_Frame(1, 100, "black"))
     Frame_3.pack(tk.BOTTOM, tk.X, 1)
     
     
