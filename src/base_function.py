@@ -865,7 +865,14 @@ def combobox_list_update(cond, combobox_1, combobox_2, cond_column_1, cond_colum
 
     combobox_1['values'] = update_list
     combobox_2['values'] = update_list_2
-    
+
+
+
+def exam_combobox_list_update(combobox):
+      
+    update_list = ["전체"]    
+    get_exam_list(update_list, con.exam_column[3], con.selected_st_name)
+    combobox['values'] = update_list
     
 
 def today():

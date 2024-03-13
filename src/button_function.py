@@ -384,7 +384,7 @@ def student_transfer(sub_wd_class, N_List, st_name, T_list_cbox, C_list_cbox):
         sub_wd_class.clear_wd()
         
     
-def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_cbox, exam_type_cbox):
+def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date_cbox, exam_type_cbox, tree):
     
     con.selected_st_name = bftn.get_selectitem(Frame_class, N_List, "학생을 선택해주세요.")
     if con.selected_st_name == False:
@@ -396,8 +396,11 @@ def lookup_info(Frame_class, N_List, student_info, consult_content, consult_date
         bftn.combobox_list_update(con.selected_st_name, consult_date_cbox, exam_type_cbox,
                                   con.consult_column[1], con.consult_column[2], con.consult_column[2])
         consult_date_cbox.set("")
-        exam_type_cbox.set("")
-    
+        exam_type_cbox.set("전체")
+
+        lookup_exam_info(Frame_class, exam_type_cbox, tree)
+
+
     
 def add_basic_info(Frame_class, user_id, student_info):
     
@@ -678,7 +681,7 @@ def sub_command_4(sub_wd_class, consult_content, consult_date_cbox, selected_dat
 
 
 
-def add_exam_info(Frame_class, tree, exam_content, user_id):
+def add_exam_info(Frame_class, tree, exam_type_cbox, exam_content, user_id):
     
     sql_set = bftn.mysql_set(con.config)
     conditions = f"{con.column[0]} = '{acc.acc_to_tname[user_id.get()]}'"
@@ -705,6 +708,7 @@ def add_exam_info(Frame_class, tree, exam_content, user_id):
                     tree.insert('', 'end', values=content)
                 sub_wd = Frame_class.sub_wd()
                 bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
+                bftn.exam_combobox_list_update(exam_type_cbox)
             else:
                 query_str = f"{acc.acc_to_tname[user_id.get()]}', '{con.selected_st_name}', '{exam_content.date_var.get()}', '{exam_content.exam_type_var.get()}', '{exam_content.exam_range_var.get()}', '{exam_content.score_var.get()}"
                 sql_set.insert_query_str(Columns, query_str, con.exam_table_name)
@@ -715,6 +719,7 @@ def add_exam_info(Frame_class, tree, exam_content, user_id):
                     tree.insert('', 'end', values=content)
                 sub_wd = Frame_class.sub_wd()
                 bftn.Error_Box(sub_wd, "입력되었습니다.", "완료")
+                bftn.exam_combobox_list_update(exam_type_cbox)
         else:
             sub_wd = Frame_class.sub_wd()
             bftn.Error_Box(sub_wd, "내용을 입력해주세요.")

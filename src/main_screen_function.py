@@ -30,10 +30,10 @@ def gen_notebook(Frame_class, N_List, user_id, width, height):
     
     tab4 = tk.Frame(notebook)   
     notebook.add(tab4, text="시험결과")
-    exam_type_list = info_exam(tab4, exam_content, user_id)
+    exam_type_list, tree = info_exam(tab4, exam_content, user_id)
     
     lookup_btn = Frame_class.gen_button_fs("조회", lambda: btftn.lookup_info(Frame_class, N_List, student_info,
-                                                              consult_content, consult_date_list, exam_type_list), 415, 320)
+                                                              consult_content, consult_date_list, exam_type_list, tree), 415, 320)
     N_List.bind("<Double-1>", lambda event: Frame_class.on_double_click_btn(event, lookup_btn))
     
     
@@ -242,9 +242,9 @@ def info_exam(tab, exam_content, user_id):
     tab_class.gen_button_fs("조회", lambda: btftn.lookup_exam_info(tab_class, exam_type_cbox, tree), 256, 305)
     tab_class.gen_button_fs("수정", lambda: btftn.modify_exam_info(tab_class, exam_content, tree, user_id), 316, 305)
     tab_class.gen_button_fs("삭제", lambda: btftn.delete_exam_info(tab_class, tree, user_id), 376, 305)
-    tab_class.gen_button_fs("입력", lambda: btftn.add_exam_info(tab_class, tree, exam_content, user_id), 436, 305)
+    tab_class.gen_button_fs("입력", lambda: btftn.add_exam_info(tab_class, tree, exam_type_cbox, exam_content, user_id), 436, 305)
     
-    return exam_type_cbox
+    return exam_type_cbox, tree
   
 
     
