@@ -41,14 +41,11 @@ def password_generator(login_screen):
     sub_wd_class.set_title("비밀번호 생성")
     sub_wd_class.set_size("285x200")
     
-    
     password = tk.StringVar()
     password_check = tk.StringVar()
     
-    sub_wd_class.gen_label("비밀번호", 10, 10)
-    sub_wd_class.gen_entry(password, 100, 10, 24)
-    sub_wd_class.gen_label("비밀번호 확인", 10, 45)
-    sub_wd_class.gen_entry(password_check, 100, 45, 24)
+    sub_wd_class.insert_label_entry_show(password, "비밀번호", "*", 10, 10, 100, 10, L_width=7, E_width=24)
+    sub_wd_class.insert_label_entry_show(password_check, "비밀번호 확인", "*", 10, 45, 100, 45, L_width=11, E_width=24)
     
     hashbox = sub_wd_class.gen_textbox(10, 140, 37, 3)
         
@@ -59,6 +56,7 @@ def password_generator(login_screen):
     
 def gen_hashvalue(password, password_check, hashbox):
     
+    hashbox.delete("1.0", tk.END)
     if f"{password.get()}" == f"{password_check.get()}":
         hashval = bftn.get_string_hash(password.get())
         hashbox.insert(tk.END, hashval)

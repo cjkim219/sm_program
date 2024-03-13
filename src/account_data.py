@@ -1,20 +1,26 @@
 
-account_info = {"원장ID": '---', 
-                "cjkim": '814f8473ac37e5288fed1225e3eefad1fe1b78f6895a299df2b0dacf29b5d084',
-                "민지ID": '---',
-                "재원ID": '---'}
+jhmokID = "highermath777"
+cjkimID = "cjkim"
+mjkimID = "minji"
+jwyunID = "aa1574"
 
 
-acc_to_tname = {"원장ID": '원장',
-             "cjkim": '부원장',
-             "민지ID": '김민지',
-             "재원ID": '윤재원'}
+account_info = {jhmokID: '7c86c6dc332653590529424288893b150d620bd84dbb94515186fa9a93947e70', 
+                cjkimID: '814f8473ac37e5288fed1225e3eefad1fe1b78f6895a299df2b0dacf29b5d084',
+                mjkimID: 'f1534392279bddbf9d43dde8701cb5be14b82f76ec6607bf8d6ad557f60f304e',
+                jwyunID: '019a2a50eb860e38b0e9996ce76931019f5aa0c9259c4a57047cec1ac8a1b83e'}
 
 
-acc_to_dbacc = {"원장ID": 'jhmok',
-             "cjkim": 'cjkim',
-             "민지ID": 'mjkim',
-             "재원ID": 'jwyun'}
+acc_to_tname = {jhmokID: '원장',
+             cjkimID: '부원장',
+             mjkimID: '김민지',
+             jwyunID: '윤재원'}
+
+
+acc_to_dbacc = {jhmokID: 'jhmok',
+             cjkimID: 'cjkim',
+             mjkimID: 'mjkim',
+             jwyunID: 'jwyun'}
 
 
 db_connect_account_info = {"jhmok": 'jhmok!',

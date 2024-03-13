@@ -9,17 +9,17 @@ login_screen_size = "296x240"
 war_box_size = "200x80"
 
 
-# script_dir = os.path.dirname(os.path.abspath(__file__))
-# logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
-# mid_frame_image = os.path.join(script_dir, r"..\..\..\images\mid_frame_image.png")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+logo_directory = os.path.join(script_dir, r"..\..\..\images\higher_math_logo.png")
+mid_frame_image = os.path.join(script_dir, r"..\..\..\images\mid_frame_image.png")
 
 
-logo_directory = r"..\images\higher_math_logo.png"
-mid_frame_image = r"..\images\mid_frame_image.png"
+# logo_directory = r"..\images\higher_math_logo.png"
+# mid_frame_image = r"..\images\mid_frame_image.png"
 
 
-host_ip = '127.0.0.1'
-# host_ip = '172.30.1.69'
+# host_ip = '127.0.0.1'
+host_ip = '192.168.45.42'
 port = 3306
 db_name = 'info'
 
@@ -28,17 +28,6 @@ config = {'user': '',
           'host': host_ip,
           'port': port,
           'database': db_name}
-
-
-
-# config = {
-#     'user': 'sam',
-#     'password': 'sam123',
-#     'host': '172.30.1.69',
-#     'port': 3306,
-#     'database': 'info'
-# }
-
 
 
 table_name = "main_table"
