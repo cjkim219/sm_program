@@ -786,7 +786,7 @@ def sub_command_10(sub_wd_class, exam_content, exam_number):
     
                     
                     
-def delete_exam_info(Frame_class, tree, user_id):
+def delete_exam_info(Frame_class, tree, exam_type_cbox, user_id):
     
     sql_set = bftn.mysql_set(con.config)
     selected_date_id = tree.selection()    
@@ -808,11 +808,11 @@ def delete_exam_info(Frame_class, tree, user_id):
             sub_wd_class.set_title("주의")
             sub_wd_class.set_size(con.war_box_size)
             sub_wd_class.gen_label("삭제하시겠습니까?", 45, 10)
-            sub_wd_class.gen_button("확인", lambda: sub_command_9(sub_wd_class, tree, selected_date_id), 45, 40)
+            sub_wd_class.gen_button("확인", lambda: sub_command_9(sub_wd_class, tree, exam_type_cbox, selected_date_id), 45, 40)
             sub_wd_class.gen_button("취소", sub_wd_class.clear_wd, 115, 40)
         
         
-def sub_command_9(sub_wd_class, tree, selected_date_id):
+def sub_command_9(sub_wd_class, tree, exam_type_cbox, selected_date_id):
     
     sql_set = bftn.mysql_set(con.config)
     
@@ -823,6 +823,7 @@ def sub_command_9(sub_wd_class, tree, selected_date_id):
     conditions = f"{con.exam_column[6]} = '{selected_data[0]}'"
     sql_set.delete_query_cond(conditions, con.exam_table_name)
     tree.delete(selected_date_id)
+    bftn.exam_combobox_list_update(exam_type_cbox)
     
     
         

@@ -241,7 +241,7 @@ def info_exam(tab, exam_content, user_id):
     # tab_class.gen_button_bs("일괄입력", empty_function, 12, 2, 10, 300)
     tab_class.gen_button_fs("조회", lambda: btftn.lookup_exam_info(tab_class, exam_type_cbox, tree), 256, 305)
     tab_class.gen_button_fs("수정", lambda: btftn.modify_exam_info(tab_class, exam_content, tree, user_id), 316, 305)
-    tab_class.gen_button_fs("삭제", lambda: btftn.delete_exam_info(tab_class, tree, user_id), 376, 305)
+    tab_class.gen_button_fs("삭제", lambda: btftn.delete_exam_info(tab_class, tree, exam_type_cbox, user_id), 376, 305)
     tab_class.gen_button_fs("입력", lambda: btftn.add_exam_info(tab_class, tree, exam_type_cbox, exam_content, user_id), 436, 305)
     
     return exam_type_cbox, tree
